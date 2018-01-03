@@ -20,7 +20,8 @@
   <script src='javascripts/bootstrap.min.js' type='text/javascript'></script>
 
   <link href='stylesheets/bootstrap.min.css' rel='stylesheet' type='text/css'>
-  <link href='stylesheets/dc.min.css' rel='stylesheet' type='text/css'>
+<!--  <link href='stylesheets/dc.min.css' rel='stylesheet' type='text/css'>-->
+  <link href='stylesheets/dc.css' rel='stylesheet' type='text/css'>
 
   <style type="text/css"></style>
 </head>
@@ -32,7 +33,7 @@
 
   <div class='row'>
     <div class='span12'>
-      <h3>Posts on <select id="mainTitle"></select></h3>
+      <h4>Posts on <select id="mainTitle"></select></h3>
       
       <div style="padding: 30px; font-size: 15px;">
       <form action="">
@@ -47,17 +48,32 @@
       </div>
       <div class='row'>
         <div class='span12'>
-            <div class='pie-graph span12' id='dc-date-chart'>
-              <h4>Posts over time</h4>
-              <p>Click and drag to filter posts over any time period.</p>
+            <div class='pie-graph span12' id='dc-award-date-chart'>
+              <h4>Date of Award</h4>
+              <p>Click and drag to filter licenses by date of award.</p>
               <div style="visibility: hidden"
                    class="reset">selected: <span class="filter"></span>
-                <a href="javascript:dateChart.filterAll();dc.redrawAll();" >reset</a>
+                <a href="javascript:dateAwardChart.filterAll();dc.redrawAll();" >reset</a>
               </div>
             </div>
         </div>
       </div>
+<!--
+      <div class='row'>
+        <div class='span12'>
+            <div class='pie-graph span12' id='dc-expiry-date-chart'>
+              <h4>Date of Expiry</h4>
+              <p>Click and drag to filter licenses by date of expiry.</p>
+              <div style="visibility: hidden"
+                   class="reset">selected: <span class="filter"></span>
+                <a href="javascript:dateExpiryChart.filterAll();dc.redrawAll();" >reset</a>
+              </div>
+            </div>
+        </div>
+      </div>
+-->
       
+<!--
       <div class='row'>
         <div class='span12'>
             <div class='pie-graph span12' id='dc-likes-date-chart'>
@@ -144,14 +160,15 @@
             <a href="javascript:hourChart.filterAll();dc.redrawAll();" >reset</a>
           </div>
         </div>
+    </div>
   </div>
-  </div>
+-->
     
   <div class='row'>
     <div class='span12'>
       
         <div class='pie-graph span12'>
-          <h4>Table of Filtered Posts</h4>
+          <h4>Table of Filtered Licenses</h4>
           <div class='dc-data-count'>
            <span class='filter-count'></span>
            selected out of <span class='total-count'></span> records.
@@ -207,18 +224,19 @@
 **********************************/
 
   
-var dateChart = dc.barChart("#dc-date-chart");
-var likesDateChart = dc.barChart("#dc-likes-date-chart");
-var commentsDateChart = dc.barChart("#dc-comments-date-chart");
-var sharesDateChart = dc.barChart("#dc-shares-date-chart");
-var likesChart = dc.barChart("#dc-likes-chart");
-var commentsChart = dc.barChart("#dc-comments-chart");
-var sharesChart = dc.barChart("#dc-shares-chart");
-var postTypeChart = dc.pieChart("#dc-post-type-chart");
-var dayOfWeekChart = dc.rowChart("#dc-day-of-week-chart");
-var hourChart = dc.rowChart("#dc-hour-chart");  
-var postsTable = dc.dataTable('.dc-data-table');
-var postsCount = dc.dataCount('.dc-data-count');
+var dateAwardChart = dc.barChart("#dc-award-date-chart");
+//var dateExpiryChart = dc.barChart("#dc-expiry-date-chart");
+//var likesDateChart = dc.barChart("#dc-likes-date-chart");
+//var commentsDateChart = dc.barChart("#dc-comments-date-chart");
+//var sharesDateChart = dc.barChart("#dc-shares-date-chart");
+//var likesChart = dc.barChart("#dc-likes-chart");
+//var commentsChart = dc.barChart("#dc-comments-chart");
+//var sharesChart = dc.barChart("#dc-shares-chart");
+//var postTypeChart = dc.pieChart("#dc-post-type-chart");
+//var dayOfWeekChart = dc.rowChart("#dc-day-of-week-chart");
+//var hourChart = dc.rowChart("#dc-hour-chart");  
+var licensesTable = dc.dataTable('.dc-data-table');
+var licensesCount = dc.dataCount('.dc-data-count');
   
 var facts;
 var all;
@@ -226,7 +244,8 @@ var all;
 var ofs = 0, pag = 10;
   
 var datasets = {
-  "Irrawaddy English Language Edition": "data/IrrawaddyEN_facebook_statuses.csv",
+  "2014 EITI Report": "data/Gems_and_jade_eiti_2014.csv",
+//  "Irrawaddy English Language Edition": "data/IrrawaddyEN_facebook_statuses.csv",
 //  "Irrawaddy Myanmar Language Edition": "data/IrrawaddyMM_facebook_statuses.csv",
 //  "7Day": "data/7Day_facebook_statuses.csv",
 //  "Eleven English Language Edition": "data/ElevenEN_facebook_statuses.csv",
@@ -250,7 +269,8 @@ for (; si < sil; si += 1) {
     fbPageSelect.appendChild(option);
 }
   
-updateData("Irrawaddy English Language Edition");
+//updateData("Irrawaddy English Language Edition");
+updateData("2014 EITI Report");
   
 fbPageSelect.onchange = function() {
   console.log(fbPageSelect.options[fbPageSelect.selectedIndex].text);
@@ -266,8 +286,9 @@ d3.csv(datasets[page], function (data) {
 
   console.log(data);
   // format our data
-  var dtgFormat = d3.time.format("%Y-%m-%d %H:%M:%S");
-  var dtgFormatIrrEN = d3.time.format("%Y-%m-%d");
+  var dtgFormat = d3.time.format("%Y-%m-%d");
+  var dtgDisplayFormat = d3.time.format("%d %B %Y");
+//  var dtgFormatIrrEN = d3.time.format("%Y-%m-%d");
   
   data.forEach(function(d) { 
 //    console.log(d);
@@ -275,18 +296,25 @@ d3.csv(datasets[page], function (data) {
 //      d.dtg = dtgFormatIrrEN.parse(d.date);
 //    else {
 //      console.log(d.status_published);
-      if (d.status_published)
-        d.dtg = dtgFormat.parse(d.status_published); 
-      else
-        d.dtg = 0;
-//    }
-    d.num_likes = +d.num_likes;
-    d.num_comments = +d.num_comments;
-    d.num_shares = +d.num_shares;
-    if (d.dtg) {
-      d.hour = +d.dtg.getHours();
-      d.dayofweek = +d.dtg.getDay();  
+      
+    d.awardDtg = dtgFormat.parse(d.Award_date_cl); 
+    if (d.awardDtg.getFullYear() < 1950) {
+      d.awardDtg = 0;
     }
+    
+    d.expDtg = dtgFormat.parse(d.Expiry_date_cl); 
+    if (d.expDtg.getFullYear() < 1950) {
+      d.expDtg = 0;
+    }
+      
+//    }
+//    d.num_likes = +d.num_likes;
+//    d.num_comments = +d.num_comments;
+//    d.num_shares = +d.num_shares;
+//    if (d.dtg) {
+//      d.hour = +d.dtg.getHours();
+//      d.dayofweek = +d.dtg.getDay();  
+//    }
     
 //    console.log(d.dtg);
 //    console.log(d.dtg.getHours());
@@ -295,7 +323,7 @@ d3.csv(datasets[page], function (data) {
   
   data = data.filter(function(d) {
 //    console.log(d.dtg);
-    if (d.dtg) return true;
+    if (d.awardDtg && d.expDtg) return true;
     else return false;
   });
 
@@ -320,46 +348,46 @@ d3.csv(datasets[page], function (data) {
 ******************************************************/
 
   
-  var postTypeValue = facts.dimension(function(d) {
-    return d.status_type;
-  });
-  var postTypeValueGroup = postTypeValue.group();
-
-  
-  var dayOfWeekValue = facts.dimension(function(d) {
-    var name = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    return d.dayofweek +'.'+ name[(d.dayofweek)];
-  });
-  var dayOfWeekValueGroup = dayOfWeekValue.group();
-  
-  
-  var hourValue = facts.dimension(function(d) {
-    var name = ['12am','1am','2am','3am','4am','5am',
-                '6am','7am','8am','9am','10am','11am',
-                '12pm','1pm','2pm','3pm','4pm','5pm',
-                '6pm','7pm','8pm','9pm','10pm','11pm'];
-    if (d.hour < 10)
-      return '0' + d.hour +'.'+ name[d.hour];
-    else return d.hour +'.'+ name[d.hour];
-  });
-  var hourValueGroup = hourValue.group();
+//  var postTypeValue = facts.dimension(function(d) {
+//    return d.status_type;
+//  });
+//  var postTypeValueGroup = postTypeValue.group();
+//
+//  
+//  var dayOfWeekValue = facts.dimension(function(d) {
+//    var name = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+//    return d.dayofweek +'.'+ name[(d.dayofweek)];
+//  });
+//  var dayOfWeekValueGroup = dayOfWeekValue.group();
+//  
+//  
+//  var hourValue = facts.dimension(function(d) {
+//    var name = ['12am','1am','2am','3am','4am','5am',
+//                '6am','7am','8am','9am','10am','11am',
+//                '12pm','1pm','2pm','3pm','4pm','5pm',
+//                '6pm','7pm','8pm','9pm','10pm','11pm'];
+//    if (d.hour < 10)
+//      return '0' + d.hour +'.'+ name[d.hour];
+//    else return d.hour +'.'+ name[d.hour];
+//  });
+//  var hourValueGroup = hourValue.group();
   
   timeValues = {
     'date': {
       'dimension': facts.dimension(function(d) {
-                      return d.dtg;
+                      return d.awardDtg;
                     }),
       'units': d3.time.days
     },
     'week': {
       'dimension': facts.dimension(function(d) {
-                      return d3.time.week(d.dtg);
+                      return d3.time.week(d.awardDtg);
                     }),
       'units': d3.time.weeks
     },
     'month': {
       'dimension': facts.dimension(function(d) {
-                      return d3.time.month(d.dtg);
+                      return d3.time.month(d.awardDtg);
                     }),
       'units': d3.time.months
     } 
@@ -393,39 +421,39 @@ d3.csv(datasets[page], function (data) {
     return {
       'add': function(p,v) {
         ++p.count;
-        // Likes
-        p.totalLikes += v["num_likes"];
-        p.avgLikes = p.count ? (p.totalLikes + v["num_likes"]) / p.count : 0;
-        // Shares
-        p.totalShares += v["num_shares"];
-        p.avgShares = p.count ? (p.totalShares + v["num_shares"]) / p.count : 0;
-        // Comments
-        p.totalComments += v["num_comments"];
-        p.avgComments = p.count ? (p.totalComments + v["num_comments"]) / p.count : 0;
+//        // Likes
+//        p.totalLikes += v["num_likes"];
+//        p.avgLikes = p.count ? (p.totalLikes + v["num_likes"]) / p.count : 0;
+//        // Shares
+//        p.totalShares += v["num_shares"];
+//        p.avgShares = p.count ? (p.totalShares + v["num_shares"]) / p.count : 0;
+//        // Comments
+//        p.totalComments += v["num_comments"];
+//        p.avgComments = p.count ? (p.totalComments + v["num_comments"]) / p.count : 0;
         return p;
       },
       'remove': function(p,v) {
         --p.count;
-        // Likes
-        p.totalLikes -= v["num_likes"];
-        p.avgLikes = p.count ? (p.totalLikes + v["num_likes"]) / p.count : 0;
-        // Shares
-        p.totalShares -= v["num_shares"];
-        p.avgShares = p.count ? (p.totalShares + v["num_shares"]) / p.count : 0;
-        // Comments
-        p.totalComments -= v["num_comments"];
-        p.avgComments = p.count ? (p.totalComments + v["num_comments"]) / p.count : 0;
+//        // Likes
+//        p.totalLikes -= v["num_likes"];
+//        p.avgLikes = p.count ? (p.totalLikes + v["num_likes"]) / p.count : 0;
+//        // Shares
+//        p.totalShares -= v["num_shares"];
+//        p.avgShares = p.count ? (p.totalShares + v["num_shares"]) / p.count : 0;
+//        // Comments
+//        p.totalComments -= v["num_comments"];
+//        p.avgComments = p.count ? (p.totalComments + v["num_comments"]) / p.count : 0;
         return p;
       },
       'initial': function() {
         return {
-          count: 0,
-          totalLikes: 0,
-          avgLikes: 0,
-          totalShares: 0,
-          avgShares: 0,
-          totalComments: 0,
-          avgComments: 0
+          count: 0
+//          totalLikes: 0,
+//          avgLikes: 0,
+//          totalShares: 0,
+//          avgShares: 0,
+//          totalComments: 0,
+//          avgComments: 0
         };
       }
     };
@@ -434,26 +462,26 @@ d3.csv(datasets[page], function (data) {
   
   //////////////// For Metrics histograms /////////
   
-  var commentValues = facts.dimension(function(d) {
-    return d.num_comments ;
-  })
-  var commentValuesGroup = commentValues.group(function(d) { 
-    return 1+d; 
-  });
-  
-  var shareValues = facts.dimension(function(d) {
-    return d.num_shares ;
-  })
-  var shareValuesGroup = shareValues.group(function(d) { 
-    return 1+d; 
-  });
-  
-  var likeValues = facts.dimension(function(d) {
-    return d.num_likes;
-  })
-  var likeValuesGroup = likeValues.group(function(d) { 
-    return 1+d;
-  });
+//  var commentValues = facts.dimension(function(d) {
+//    return d.num_comments ;
+//  })
+//  var commentValuesGroup = commentValues.group(function(d) { 
+//    return 1+d; 
+//  });
+//  
+//  var shareValues = facts.dimension(function(d) {
+//    return d.num_shares ;
+//  })
+//  var shareValuesGroup = shareValues.group(function(d) { 
+//    return 1+d; 
+//  });
+//  
+//  var likeValues = facts.dimension(function(d) {
+//    return d.num_likes;
+//  })
+//  var likeValuesGroup = likeValues.group(function(d) { 
+//    return 1+d;
+//  });
   
   
 
@@ -467,7 +495,7 @@ d3.csv(datasets[page], function (data) {
 
   
   // Date bar chart
-  dateChart.width(1000)
+  dateAwardChart.width(1000)
     .height(200)
     .margins({top: 10, right: 10, bottom: 50, left: 40})
 //    .dimension(dateValue) 
@@ -486,164 +514,164 @@ d3.csv(datasets[page], function (data) {
     .controlsUseVisibility(true);
   
   
-  // Likes by Date bar chart
-  likesDateChart.width(1000)
-    .height(200)
-    .margins({top: 10, right: 10, bottom: 50, left: 40})
-    .dimension(timeValues[getTimeScale()].dimension)
-    .group(timeValues[getTimeScale()].metricsGroup) 
-    .valueAccessor(function (p) {
-      return p.value.avgLikes;
-    })
-    .x(d3.time.scale()) 
-    .xUnits(timeValues[getTimeScale()].units)
-    .elasticX(true)
-    .elasticY(true)
-    .brushOn(false)
-    .centerBar(false)
-    .xAxisPadding(50) 
-    .controlsUseVisibility(false);
-  
-  // Comments by Date bar chart
-  commentsDateChart.width(1000)
-    .height(200)
-    .margins({top: 10, right: 10, bottom: 50, left: 40})
-    .dimension(timeValues[getTimeScale()].dimension)
-    .group(timeValues[getTimeScale()].metricsGroup) 
-    .valueAccessor(function (p) {
-      return p.value.avgComments;
-    })
-    .x(d3.time.scale()) 
-    .xUnits(timeValues[getTimeScale()].units)
-    .elasticX(true)
-    .elasticY(true)
-    .brushOn(false)
-    .centerBar(false)
-    .xAxisPadding(50) 
-    .controlsUseVisibility(false);
-  
-  // Likes by Date bar chart
-  sharesDateChart.width(1000)
-    .height(200)
-    .margins({top: 10, right: 10, bottom: 50, left: 40})
-    .dimension(timeValues[getTimeScale()].dimension)
-    .group(timeValues[getTimeScale()].metricsGroup) 
-    .valueAccessor(function (p) {
-      return p.value.avgShares;
-    })
-    .x(d3.time.scale()) 
-    .xUnits(timeValues[getTimeScale()].units)
-    .elasticX(true)
-    .elasticY(true)
-    .brushOn(false)
-    .centerBar(false)
-    .xAxisPadding(50) 
-    .controlsUseVisibility(false);
-
-
-  // Like histogram chart
-  likesChart.width(300)
-    .height(200)
-    .margins({top: 10, right: 10, bottom: 20, left: 40})
-    .dimension(likeValues) 
-    .group(likeValuesGroup) 
-    .x(d3.scale.log()) 
-    .elasticX(true)
-    .elasticY(true)
-    .brushOn(true)
-    .centerBar(false)
-    .controlsUseVisibility(true)
-    .xAxis().tickFormat(function (v) {
-      if (Math.log10(v) - Math.floor(Math.log10(v)) == 0)
-        return v-1;
-      else return "";
-    });
-  
-  // Comments histogram chart
-  commentsChart.width(300)
-    .height(200)
-    .margins({top: 10, right: 10, bottom: 20, left: 40})
-    .dimension(commentValues) 
-    .group(commentValuesGroup) 
-    .x(d3.scale.log()) 
-    .elasticX(true)
-    .elasticY(true)
-    .brushOn(true)
-    .centerBar(false)
-    .controlsUseVisibility(true)
-    .xAxis().tickFormat(function (v) {
-      if (Math.log10(v) - Math.floor(Math.log10(v)) == 0)
-        return v-1;
-      else return "";
-    });
-  
-   // Shares histogram chart
-  sharesChart.width(300)
-    .height(200)
-    .margins({top: 10, right: 10, bottom: 20, left: 40})
-    .dimension(shareValues) 
-    .group(shareValuesGroup) 
-    .x(d3.scale.log()) 
-    .elasticX(true)
-    .elasticY(true)
-    .brushOn(true)
-    .centerBar(false)
-    .controlsUseVisibility(true)
-    .xAxis().tickFormat(function (v) {
-      if (Math.log10(v) - Math.floor(Math.log10(v)) == 0)
-        return v-1;
-      else return "";
-    });
-  
-  
-  // Post Type donut chart
-  postTypeChart.width(200)
-    .height(200)
-    .dimension(postTypeValue)
-    .group(postTypeValueGroup)
-    .renderLabel(true)
-    .innerRadius(40)
-    .transitionDuration(500) 
-    .controlsUseVisibility(true);
-  
-  
-  // Day of week bar chart
-  dayOfWeekChart.width(300)
-    .height(200)
-    .margins({top: 10, right: 10, bottom: 20, left: 40})
-    .dimension(dayOfWeekValue)
-    .group(dayOfWeekValueGroup)
-    .transitionDuration(500)
-    .controlsUseVisibility(true)
-    .filterPrinter(function (d) {
-      return d.map(function(x) {return " " + x.split('.')[1];});
-    })
-    .elasticX(true)
-    .label(function (d) {
-        return d.key.split('.')[1];
-    })
-    .xAxis().tickFormat(function(v) {return v;});
-  
-  // Day of week bar chart
-  hourChart.width(400)
-    .height(400)
-    .margins({top: 10, right: 10, bottom: 20, left: 40})
-    .dimension(hourValue)
-    .group(hourValueGroup)
-    .transitionDuration(500)
-    .controlsUseVisibility(true)
-    .filterPrinter(function (d) {
-      return d.map(function(x) {return " " + x.split('.')[1];});
-    })
-    .elasticX(true)
-    .label(function (d) {
-      return d.key.split('.')[1];
-    })
-    .xAxis().tickFormat(function(v) {return v;});
+//  // Likes by Date bar chart
+//  likesDateChart.width(1000)
+//    .height(200)
+//    .margins({top: 10, right: 10, bottom: 50, left: 40})
+//    .dimension(timeValues[getTimeScale()].dimension)
+//    .group(timeValues[getTimeScale()].metricsGroup) 
+//    .valueAccessor(function (p) {
+//      return p.value.avgLikes;
+//    })
+//    .x(d3.time.scale()) 
+//    .xUnits(timeValues[getTimeScale()].units)
+//    .elasticX(true)
+//    .elasticY(true)
+//    .brushOn(false)
+//    .centerBar(false)
+//    .xAxisPadding(50) 
+//    .controlsUseVisibility(false);
+//  
+//  // Comments by Date bar chart
+//  commentsDateChart.width(1000)
+//    .height(200)
+//    .margins({top: 10, right: 10, bottom: 50, left: 40})
+//    .dimension(timeValues[getTimeScale()].dimension)
+//    .group(timeValues[getTimeScale()].metricsGroup) 
+//    .valueAccessor(function (p) {
+//      return p.value.avgComments;
+//    })
+//    .x(d3.time.scale()) 
+//    .xUnits(timeValues[getTimeScale()].units)
+//    .elasticX(true)
+//    .elasticY(true)
+//    .brushOn(false)
+//    .centerBar(false)
+//    .xAxisPadding(50) 
+//    .controlsUseVisibility(false);
+//  
+//  // Likes by Date bar chart
+//  sharesDateChart.width(1000)
+//    .height(200)
+//    .margins({top: 10, right: 10, bottom: 50, left: 40})
+//    .dimension(timeValues[getTimeScale()].dimension)
+//    .group(timeValues[getTimeScale()].metricsGroup) 
+//    .valueAccessor(function (p) {
+//      return p.value.avgShares;
+//    })
+//    .x(d3.time.scale()) 
+//    .xUnits(timeValues[getTimeScale()].units)
+//    .elasticX(true)
+//    .elasticY(true)
+//    .brushOn(false)
+//    .centerBar(false)
+//    .xAxisPadding(50) 
+//    .controlsUseVisibility(false);
+//
+//
+//  // Like histogram chart
+//  likesChart.width(300)
+//    .height(200)
+//    .margins({top: 10, right: 10, bottom: 20, left: 40})
+//    .dimension(likeValues) 
+//    .group(likeValuesGroup) 
+//    .x(d3.scale.log()) 
+//    .elasticX(true)
+//    .elasticY(true)
+//    .brushOn(true)
+//    .centerBar(false)
+//    .controlsUseVisibility(true)
+//    .xAxis().tickFormat(function (v) {
+//      if (Math.log10(v) - Math.floor(Math.log10(v)) == 0)
+//        return v-1;
+//      else return "";
+//    });
+//  
+//  // Comments histogram chart
+//  commentsChart.width(300)
+//    .height(200)
+//    .margins({top: 10, right: 10, bottom: 20, left: 40})
+//    .dimension(commentValues) 
+//    .group(commentValuesGroup) 
+//    .x(d3.scale.log()) 
+//    .elasticX(true)
+//    .elasticY(true)
+//    .brushOn(true)
+//    .centerBar(false)
+//    .controlsUseVisibility(true)
+//    .xAxis().tickFormat(function (v) {
+//      if (Math.log10(v) - Math.floor(Math.log10(v)) == 0)
+//        return v-1;
+//      else return "";
+//    });
+//  
+//   // Shares histogram chart
+//  sharesChart.width(300)
+//    .height(200)
+//    .margins({top: 10, right: 10, bottom: 20, left: 40})
+//    .dimension(shareValues) 
+//    .group(shareValuesGroup) 
+//    .x(d3.scale.log()) 
+//    .elasticX(true)
+//    .elasticY(true)
+//    .brushOn(true)
+//    .centerBar(false)
+//    .controlsUseVisibility(true)
+//    .xAxis().tickFormat(function (v) {
+//      if (Math.log10(v) - Math.floor(Math.log10(v)) == 0)
+//        return v-1;
+//      else return "";
+//    });
+//  
+//  
+//  // Post Type donut chart
+//  postTypeChart.width(200)
+//    .height(200)
+//    .dimension(postTypeValue)
+//    .group(postTypeValueGroup)
+//    .renderLabel(true)
+//    .innerRadius(40)
+//    .transitionDuration(500) 
+//    .controlsUseVisibility(true);
+//  
+//  
+//  // Day of week bar chart
+//  dayOfWeekChart.width(300)
+//    .height(200)
+//    .margins({top: 10, right: 10, bottom: 20, left: 40})
+//    .dimension(dayOfWeekValue)
+//    .group(dayOfWeekValueGroup)
+//    .transitionDuration(500)
+//    .controlsUseVisibility(true)
+//    .filterPrinter(function (d) {
+//      return d.map(function(x) {return " " + x.split('.')[1];});
+//    })
+//    .elasticX(true)
+//    .label(function (d) {
+//        return d.key.split('.')[1];
+//    })
+//    .xAxis().tickFormat(function(v) {return v;});
+//  
+//  // Day of week bar chart
+//  hourChart.width(400)
+//    .height(400)
+//    .margins({top: 10, right: 10, bottom: 20, left: 40})
+//    .dimension(hourValue)
+//    .group(hourValueGroup)
+//    .transitionDuration(500)
+//    .controlsUseVisibility(true)
+//    .filterPrinter(function (d) {
+//      return d.map(function(x) {return " " + x.split('.')[1];});
+//    })
+//    .elasticX(true)
+//    .label(function (d) {
+//      return d.key.split('.')[1];
+//    })
+//    .xAxis().tickFormat(function(v) {return v;});
   
 
   // Data Count
-  postsCount /* dc.dataCount('.dc-data-count', 'chartGroup'); */
+  licensesCount /* dc.dataCount('.dc-data-count', 'chartGroup'); */
     .dimension(facts)
     .group(all)
     .html({
@@ -653,12 +681,12 @@ d3.csv(datasets[page], function (data) {
     });
   
   // Data Table
-  postsTable
+  licensesTable
     .width(1000)
     .dimension(timeValues.date.dimension)
     .group(function (d) {
 //      console.log(d);
-      return "Table of Posts";
+      return "Table of Licenses";
     })
     .size(facts.size())
     .columns([
@@ -670,36 +698,52 @@ d3.csv(datasets[page], function (data) {
 //  <span>Shares</span>
       
       {
-        label: 'Date Published',
-        format: function(d) { return d['status_published'];}
+        label: 'License Owner Name',
+        format: function(d) { return d['Company_Name_cl'];}
       },
       {
-        label: 'Post Contents',
-        format: function(d) { return d['status_message'];}
+        label: 'Award Date',
+        format: function(d) { return dtgDisplayFormat(d.awardDtg);}
       },
       {
-        label: 'Link', 
-        format: function(d) { 
-//          console.log(d);
-          return '<a href=\"https://www.facebook.com/' 
-            + d['status_id'] 
-            + '/\">link</a>'
-        }
+        label: 'Expiry Date',
+        format: function(d) { return dtgDisplayFormat(d.expDtg);}
+      },
+//      {
+//        label: 'Link', 
+//        format: function(d) { 
+////          console.log(d);
+//          return '<a href=\"https://www.facebook.com/' 
+//            + d['status_id'] 
+//            + '/\">link</a>'
+//        }
+//      },
+      {
+        label: 'Commodity',
+        format: function(d) { return d['Commodity_cl'];}
       },
       {
-        label: 'Likes',
-        format: function(d) { return d['num_likes'];}
+        label: 'License Type',
+        format: function(d) { return d['License_type_cl'];}
       },
       {
-        label: 'Comments',
-        format: function(d) { return d['num_comments'];}
+        label: 'License Area (acres)',
+        format: function(d) { return d['Area_acre_cl'];}
       },
       {
-        label: 'Shares',
-        format: function(d) { return d['num_shares'];}
+        label: 'State/Region',
+        format: function(d) { return d['Location_state_cl'];}
+      },
+      {
+        label: 'Group',
+        format: function(d) { return d['Group_cl'];}
+      },
+      {
+        label: 'Block',
+        format: function(d) { return d['Block_cl'];}
       }
     ])
-    .sortBy(function(d){ return -d['num_likes']; });
+    .sortBy(function(d){ return -d['Company_Name_cl']; });
   
     update();
 
@@ -726,19 +770,19 @@ function display() {
     d3.select('#size').text(facts.size());
 }
 function update() {
-    postsTable.beginSlice(ofs);
-    postsTable.endSlice(ofs+pag);
+    licensesTable.beginSlice(ofs);
+    licensesTable.endSlice(ofs+pag);
     display();
 }
 function next() {
     ofs += pag;
     update();
-    postsTable.redraw();
+    licensesTable.redraw();
 }
 function last() {
     ofs -= pag;
     update();
-    postsTable.redraw();
+    licensesTable.redraw();
 }  
   
 function getTimeScale() {
@@ -756,34 +800,34 @@ function resetDateChartData() {
     var timeScale = getTimeScale();
 //    console.log(dateChart.filters());
     var tempFilter = dateChart.filters();
-    dateChart
+    dateAwardChartChart
       .filterAll()
       .dimension(timeValues[timeScale].dimension) 
       .group(timeValues[timeScale].group) 
       .xUnits(timeValues[timeScale].units);
   
-    likesDateChart
-      .filterAll()
-      .dimension(timeValues[timeScale].dimension) 
-      .group(timeValues[timeScale].metricsGroup) 
-      .xUnits(timeValues[timeScale].units);  
-    commentsDateChart
-      .filterAll()
-      .dimension(timeValues[timeScale].dimension) 
-      .group(timeValues[timeScale].metricsGroup) 
-      .xUnits(timeValues[timeScale].units);  
-    sharesDateChart
-      .filterAll()
-      .dimension(timeValues[timeScale].dimension) 
-      .group(timeValues[timeScale].metricsGroup) 
-      .xUnits(timeValues[timeScale].units);  
+//    likesDateChart
+//      .filterAll()
+//      .dimension(timeValues[timeScale].dimension) 
+//      .group(timeValues[timeScale].metricsGroup) 
+//      .xUnits(timeValues[timeScale].units);  
+//    commentsDateChart
+//      .filterAll()
+//      .dimension(timeValues[timeScale].dimension) 
+//      .group(timeValues[timeScale].metricsGroup) 
+//      .xUnits(timeValues[timeScale].units);  
+//    sharesDateChart
+//      .filterAll()
+//      .dimension(timeValues[timeScale].dimension) 
+//      .group(timeValues[timeScale].metricsGroup) 
+//      .xUnits(timeValues[timeScale].units);  
   
   
     if (tempFilter.length > 0) {
-      dateChart.filter(tempFilter[0]);
-      likesDateChart.filter(tempFilter[0]);
-      commentsDateChart.filter(tempFilter[0]);
-      sharesDateChart.filter(tempFilter[0]);
+      dateAwardChartChart.filter(tempFilter[0]);
+//      likesDateChart.filter(tempFilter[0]);
+//      commentsDateChart.filter(tempFilter[0]);
+//      sharesDateChart.filter(tempFilter[0]);
     }
 }  
   
