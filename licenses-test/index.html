@@ -73,6 +73,33 @@
       </div>
 -->
       
+    <div class='row'>
+    <div class='span12'>
+      
+        <div class='pie-graph span4' id='dc-license-type-chart'>
+          <h4>License Type</h4>
+          <div style="visibility: hidden" class="reset">selected: <span class="filter"></span>
+            <a href="javascript:licenseTypeChart.filterAll();dc.redrawAll();" >reset</a>
+          </div>
+        </div>
+<!--
+        <div class='pie-graph span4' id='dc-day-of-week-chart'>
+          <h4>Day of Week</h4>
+          <div style="visibility: hidden" class="reset">selected: <span class="filter"></span>
+            <a href="javascript:dayOfWeekChart.filterAll();dc.redrawAll();" >reset</a>
+          </div>
+        </div>
+        <div class='pie-graph span4' id='dc-hour-chart'>
+          <h4>Time of Day</h4>
+          <div style="visibility: hidden" class="reset">selected: <span class="filter"></span>
+            <a href="javascript:hourChart.filterAll();dc.redrawAll();" >reset</a>
+          </div>
+        </div>
+-->
+    </div>
+  </div>
+      
+      
 <!--
       <div class='row'>
         <div class='span12'>
@@ -226,6 +253,8 @@
   
 var dateAwardChart = dc.barChart("#dc-award-date-chart");
 //var dateExpiryChart = dc.barChart("#dc-expiry-date-chart");
+var licenseTypeChart = dc.pieChart("#dc-license-type-chart");
+
 //var likesDateChart = dc.barChart("#dc-likes-date-chart");
 //var commentsDateChart = dc.barChart("#dc-comments-date-chart");
 //var sharesDateChart = dc.barChart("#dc-shares-date-chart");
@@ -306,7 +335,8 @@ d3.csv(datasets[page], function (data) {
     if (d.expDtg.getFullYear() < 1950) {
       d.expDtg = 0;
     }
-      
+    
+    
 //    }
 //    d.num_likes = +d.num_likes;
 //    d.num_comments = +d.num_comments;
@@ -347,6 +377,10 @@ d3.csv(datasets[page], function (data) {
 * Crossfilter can filter by exact value, or by range. *
 ******************************************************/
 
+  var licenseTypeValue = facts.dimension(function(d) {
+    return d.License_type_cl;
+  });
+  var licenseTypeValueGroup = licenseTypeValue.group(); 
   
 //  var postTypeValue = facts.dimension(function(d) {
 //    return d.status_type;
@@ -513,6 +547,16 @@ d3.csv(datasets[page], function (data) {
     .xAxisPadding(50) 
     .controlsUseVisibility(true);
   
+  
+  // Post Type donut chart
+  licenseTypeChart.width(200)
+    .height(200)
+    .dimension(licenseTypeValue)
+    .group(licenseTypeValueGroup)
+    .renderLabel(true)
+    .innerRadius(40)
+    .transitionDuration(500) 
+    .controlsUseVisibility(true);
   
 //  // Likes by Date bar chart
 //  likesDateChart.width(1000)
