@@ -4766,7 +4766,8 @@ dc.pieChart = function (parent, chartGroup) {
     var _g;
     var _cx;
     var _cy;
-    var _minAngleForLabel = DEFAULT_MIN_ANGLE_FOR_LABEL;
+//    var _minAngleForLabel = DEFAULT_MIN_ANGLE_FOR_LABEL;
+    var _minAngleForLabel = 0.1;
     var _externalLabelRadius;
     var _drawPaths = false;
     var _chart = dc.capMixin(dc.colorMixin(dc.baseMixin({})));
