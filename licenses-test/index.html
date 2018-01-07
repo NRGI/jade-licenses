@@ -33,7 +33,7 @@
 
   <div class='row'>
     <div class='span12'>
-      <h4>Posts on <select id="mainTitle"></select></h3>
+      <h4>Data source: <select id="mainTitle"></select></h3>
       
       <div style="padding: 30px; font-size: 15px;">
       <form action="">
@@ -221,6 +221,9 @@
     </div>
   </div>
 -->
+      
+  <br/>
+  <br/>
   
   <div class='row'>
     <div class='span12'>
@@ -667,7 +670,7 @@ d3.csv(datasets[page], function (data) {
   // State/Region bar chart
   stateLocationChart.width(300)
     .height(200)
-    .margins({top: 10, right: 10, bottom: 20, left: 40})
+    .margins({top: 0, right: 10, bottom: 20, left: 40})
     .dimension(stateLocationValue)
     .group(stateLocationValueGroup)
     .transitionDuration(500)
@@ -684,7 +687,7 @@ d3.csv(datasets[page], function (data) {
   // Companies bar chart
   companiesChart.width(450)
     .height(1000)
-    .margins({top: 10, right: 10, bottom: 20, left: 40})
+    .margins({top: 0, right: 10, bottom: 20, left: 40})
     .dimension(companiesValue)
     .group(companiesValueGroup)
     .transitionDuration(500)
@@ -873,6 +876,7 @@ d3.csv(datasets[page], function (data) {
 //    .xAxis().tickFormat(function(v) {return v;});
   
 
+    
   // Data Count
   licensesCount /* dc.dataCount('.dc-data-count', 'chartGroup'); */
     .dimension(facts)
@@ -1002,7 +1006,8 @@ function getTimeScale() {
 function resetDateChartData() {
     var timeScale = getTimeScale();
 //    console.log(dateChart.filters());
-    var tempFilter = dateChart.filters();
+    var tempFilterAward = dateAwardChart.filters();
+    var tempFilterExp = dateExpiryChart.filters();
     dateAwardChart
       .filterAll()
       .dimension(awardTimeValues[timeScale].dimension) 
@@ -1031,9 +1036,10 @@ function resetDateChartData() {
 //      .xUnits(timeValues[timeScale].units);  
   
   
-    if (tempFilter.length > 0) {
-      dateAwardChart.filter(tempFilter[0]);
-      dateExpiryChart.filter(tempFilter[0]);
+    if (tempFilterAward.length > 0 || 
+       tempFilterExp.length > 0) {
+      dateAwardChart.filter(tempFilterAward[0]);
+      dateExpiryChart.filter(tempFilterExp[0]);
 //      likesDateChart.filter(tempFilter[0]);
 //      commentsDateChart.filter(tempFilter[0]);
 //      sharesDateChart.filter(tempFilter[0]);
