@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-cat > revenues-test/version.txt << EOF
+cat > licenses-test/version.txt << EOF
 {
   "commit_sha": "$COMMIT",
-  "image": "nrgi/jade-revenues:$BRANCH.$COMMIT"
+  "image": "nrgi/jade-licenses:$BRANCH.$COMMIT"
 }
 EOF
