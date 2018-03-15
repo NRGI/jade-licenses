@@ -18,10 +18,18 @@
   <script src='javascripts/dc.js' type='text/javascript'></script>
   <script src='javascripts/jquery-1.9.1.min.js' type='text/javascript'></script>
   <script src='javascripts/bootstrap.min.js' type='text/javascript'></script>
+  <script src="javascripts/datepicker-master/dist/datepicker.js" type='text/javascript'></script>
+  <script src="javascripts/moment.min.js" type='text/javascript'></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.2.1/dt-1.10.16/datatables.min.js"></script>
 
-  <link href='stylesheets/bootstrap.min.css' rel='stylesheet' type='text/css'>
+
+
+  <link href='stylesheets/bootstrap.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdn.datatables.net/v/dt/jq-3.2.1/dt-1.10.16/datatables.min.css"/>
 <!--  <link href='stylesheets/dc.min.css' rel='stylesheet' type='text/css'>-->
-  <link href='stylesheets/dc.css' rel='stylesheet' type='text/css'>
+  <link href='stylesheets/dc.css' rel='stylesheet'>
+  <link rel="stylesheet" href="stylesheets/datepicker-styles.css"/>
+  <link rel="stylesheet" href="stylesheets/license-explorer.css"/>
 
   <style type="text/css"></style>
 </head>
@@ -35,7 +43,21 @@
     <div class='span12'>
       <h4>Data source: <select id="mainTitle"></select></h3>
       
-      <div style="padding: 30px; font-size: 15px;">
+      <div class='row'>
+        <div class='span12'>
+          <h4> Total number of licenses: <span id="size"></span></h4>
+          <h4> 
+            <div class='dc-data-count'>
+             <span class='filter-count'></span>
+             selected out of <span class='total-count'></span> licenses.
+            </div>
+          </h4>
+        </div>
+      </div>
+      
+      
+      
+      <div style="padding: 30px 0px; font-size: 15px;">
       <form action="">
         Aggregate by: &nbsp;
         <input type="radio" name="timeRadio" value="date" 
@@ -50,9 +72,15 @@
         <div class='span12'>
             <div class='pie-graph span12' id='dc-award-date-chart'>
               <h4>Date of Award</h4>
-              <p>Click and drag to filter licenses by date of award.</p>
+              <p>Click and drag on the chart to filter licenses by date of award or select from the date pickers below.</p>
+              <div class="field">
+                From: <input name="award_date_from"/>
+              </div>
+              <div class="field">
+                  To: <input name="award_date_to"/>
+              </div>
               <div style="visibility: hidden"
-                   class="reset">selected: <span class="filter"></span>
+                   class="reset"> <!-- selected: <span class="filter"></span> -->
                 <a href="javascript:dateAwardChart.filterAll();dc.redrawAll();" >reset</a>
               </div>
             </div>
@@ -62,14 +90,22 @@
         <div class='span12'>
             <div class='pie-graph span12' id='dc-expiry-date-chart'>
               <h4>Date of Expiry</h4>
-              <p>Click and drag to filter licenses by date of expiry.</p>
+              <p>Click and drag on the chart to filter licenses by date of expiry or select from the date pickers below.</p>
+              <div class="field">
+                From: <input name="exp_date_from"/>
+              </div>
+              <div class="field">
+                  To: <input name="exp_date_to"/>
+              </div>
               <div style="visibility: hidden"
-                   class="reset">selected: <span class="filter"></span>
+                   class="reset"> <!-- selected: <span class="filter"></span> -->
                 <a href="javascript:dateExpiryChart.filterAll();dc.redrawAll();" >reset</a>
               </div>
             </div>
         </div>
       </div>
+      
+      
       
     <div class='row'>
     <div class='span12'>
@@ -111,137 +147,49 @@
   
   <br/>    
   <br/>    
-      
+   
   <div class='row'>
-    <div class='span12'>
       
-        <div class='pie-graph span6' id='dc-companies-chart'>
-          <h4 style="text-align: center">License Holder Companies</h4>
-          <div style="visibility: hidden" class="reset">selected: <span class="filter"></span>
-            <a href="javascript:companiesChart.filterAll();dc.redrawAll();" >reset</a>
-          </div>
+        <div class='col-sm-6'>
+          <h4 class="chart-title">License Holder Companies</h4>
+          Sort by:&nbsp;
+          <input type="radio" name="company_radio" value="licenses" checked="true"/> Number of Licenses &nbsp;
+          <input type="radio" name="company_radio" value="name" /> Name of Company
         </div>
-        <div class='pie-graph span6' id='dc-license-groups-chart'>
-          <h4 style="text-align: center">License Groups</h4>
-          <div style="visibility: hidden" class="reset">selected: <span class="filter"></span>
-            <a href="javascript:licenseGroupsChart.filterAll();dc.redrawAll();" >reset</a>
-          </div>
+        <div class='col-sm-5'>
+          <h4 class="chart-title">License Location</h4>
+          Sort by:&nbsp;
+          <input type="radio" name="location_radio" value="licenses" checked="true"/> Number of Licenses &nbsp;
+          <input type="radio" name="location_radio" value="name" /> Name of Location
         </div>
-      
-    </div>
-  </div>
-      
-<!--
-      <div class='row'>
-        <div class='span12'>
-            <div class='pie-graph span12' id='dc-likes-date-chart'>
-              <h4>Likes over time</h4>
-              <div style="visibility: hidden"
-                   class="reset">selected: <span class="filter"></span>
-                <a href="javascript:likesDateChart.filterAll();dc.redrawAll();" >reset</a>
-              </div>
-            </div>
-        </div>
-      </div>
-      <div class='row'>
-        <div class='span12'>
-            <div class='pie-graph span12' id='dc-comments-date-chart'>
-              <h4>Comments over time</h4>
-              <div style="visibility: hidden"
-                   class="reset">selected: <span class="filter"></span>
-                <a href="javascript:commentsDateChart.filterAll();dc.redrawAll();" >reset</a>
-              </div>
-            </div>
-        </div>
-      </div>
-      <div class='row'>
-        <div class='span12'>
-            <div class='pie-graph span12' id='dc-shares-date-chart'>
-              <h4>Shares over time</h4>
-              <div style="visibility: hidden"
-                   class="reset">selected: <span class="filter"></span>
-                <a href="javascript:sharesDateChart.filterAll();dc.redrawAll();" >reset</a>
-              </div>
-            </div>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-  
-  
-  <div class='row'>
-    <div class='span12'>
-        <div class='pie-graph span4' id='dc-likes-chart'>
-          <h4>Histogram of Likes</h4>
-          <div style="visibility: hidden"
-               class="reset">selected: <span class="filter"></span>
-            <a href="javascript:likesChart.filterAll();dc.redrawAll();" >reset</a>
-          </div>
-        </div>
-        <div class='pie-graph span4' id='dc-comments-chart'>
-          <h4>Histogram of Comments</h4>
-          <div style="visibility: hidden"
-               class="reset">selected: <span class="filter"></span>
-            <a href="javascript:commentsChart.filterAll();dc.redrawAll();" >reset</a>
-          </div>
-        </div>
-        <div class='pie-graph span4' id='dc-shares-chart'>
-          <h4>Histogram of Shares</h4>
-          <div style="visibility: hidden"
-               class="reset">selected: <span class="filter"></span>
-            <a href="javascript:sharesChart.filterAll();dc.redrawAll();" >reset</a>
-          </div>
-        </div>
-    </div>
-  </div>
-  
 
+  </div>    
   <div class='row'>
-    <div class='span12'>
       
-        <div class='pie-graph span4' id='dc-post-type-chart'>
-          <h4>Post Type</h4>
-          <div style="visibility: hidden" class="reset">selected: <span class="filter"></span>
-            <a href="javascript:postTypeChart.filterAll();dc.redrawAll();" >reset</a>
+        <div class='pie-chart col-sm-6'>
+          <div id='dc-companies-chart' class='row-chart-overflow'>
+            <div style="visibility: hidden" class="reset">selected: <span class="filter"></span>
+              <a href="javascript:companiesChart.filterAll();dc.redrawAll();" >reset</a>
+            </div>
           </div>
         </div>
-        <div class='pie-graph span4' id='dc-day-of-week-chart'>
-          <h4>Day of Week</h4>
-          <div style="visibility: hidden" class="reset">selected: <span class="filter"></span>
-            <a href="javascript:dayOfWeekChart.filterAll();dc.redrawAll();" >reset</a>
+        <div class='pie-chart col-sm-6'>
+          <div id='dc-license-location-chart' class='row-chart-overflow'>
+            <div style="visibility: hidden" class="reset">selected: <span class="filter"></span>
+              <a href="javascript:licenseLocationChart.filterAll();dc.redrawAll();" >reset</a>
+            </div>
           </div>
         </div>
-        <div class='pie-graph span4' id='dc-hour-chart'>
-          <h4>Time of Day</h4>
-          <div style="visibility: hidden" class="reset">selected: <span class="filter"></span>
-            <a href="javascript:hourChart.filterAll();dc.redrawAll();" >reset</a>
-          </div>
-        </div>
-    </div>
+
   </div>
--->
+      
+
       
   <br/>
   <br/>
+
+<!--
   
-  <div class='row'>
-    <div class='span12'>
-      
-        <div class='pie-graph span12'>
-          <h4>Table of Filtered Licenses</h4>
-          <div class='dc-data-count'>
-           <span class='filter-count'></span>
-           selected out of <span class='total-count'></span> records.
-          </div>
-           <!-- anchor div for data table -->
-           <div class='table table-hover dc-data-table dc-chart' id='data-table'>
-              <!-- create a custom header -->
-              <!-- data rows will filled in here -->
-           </div>
-        </div>
-     </div>
-  </div>
         
   <div class='row'>
     <div class='span12'> 
@@ -252,6 +200,14 @@
         </div>
     </div>
   </div>
+-->
+      
+  <div class = 'row'>
+    <div class='span12'>
+      <table id="table" class="display"></table>
+    </div>
+  </div>
+  <br/>
   
 </div>
 </div>
@@ -277,8 +233,103 @@
 </H5>
 -->
 
-  
 <script>
+
+const dateFilterFormat = 'DD MMM YYYY';
+const dateFilterFormatDCjs = 'YYYY-MM-DD';
+  
+function datepickerInitialiser(type,direction) {
+  return {
+      transform: {
+        input: value => moment(value).toISOString(),
+        output: value => moment(value).format(dateFilterFormat)
+      },
+      callbacks: {
+        onSelect: onPickDateWrapper(type,direction)
+      }
+  } 
+}
+  
+function onPickDateWrapper(type,direction) {
+  if (direction == 'from' && type == 'award') return onPickDateAwardFrom;  
+  if (direction == 'to' && type == 'award') return onPickDateAwardTo;
+  if (direction == 'from' && type == 'exp') return onPickDateExpFrom;
+  if (direction == 'to' && type == 'exp') return onPickDateExpTo;
+}  
+
+function onPickDateAwardFrom(d) { onPickDate('award','from',d); }
+function onPickDateAwardTo(d) { onPickDate('award','to',d); }
+function onPickDateExpFrom(d) { onPickDate('exp','from',d); }
+function onPickDateExpTo(d) { onPickDate('exp','to',d); }
+  
+function onPickDate(type,direction,d) {
+  console.log(type + ' ' + direction + ' ' + d);
+  switch(type) {
+    case 'award':
+      var fromPicker = pickerAwardDateFrom;
+      var toPicker = pickerAwardDateTo;
+      var currentChart = dateAwardChart;
+      var timeValues = awardTimeValues;
+      switch(direction) {
+        case 'from':
+          var thisPicker = pickerAwardDateFrom;
+          var otherPicker = pickerAwardDateTo;
+          break;
+        case 'to':
+          var thisPicker = pickerAwardDateTo;
+          var otherPicker = pickerAwardDateFrom;
+          break;
+      }
+      break;
+    case 'exp':
+      var fromPicker = pickerExpDateFrom;
+      var toPicker = pickerExpDateTo;
+      var currentChart = dateExpiryChart;
+      var timeValues = expTimeValues;
+      switch(direction) {
+        case 'from':
+          var thisPicker = pickerExpDateFrom;
+          var otherPicker = pickerExpDateTo;
+          break;
+        case 'to':
+          var thisPicker = pickerExpDateTo;
+          var otherPicker = pickerExpDateFrom;
+          break;
+      }
+      break;
+  }
+  var from = moment(fromPicker.getValue(),dateFilterFormat);
+  var to = moment(toPicker.getValue(),dateFilterFormat); 
+  console.log(from);
+  console.log(to);
+  otherPickerDate = (direction == 'from') ? to : from;
+  if (to._isValid && from._isValid) {
+    if (from > to) {
+      alert("'From' date has to be earlier than 'To' date.");
+      thisPicker.setValue(otherPickerDate.toISOString());
+      from = moment(fromPicker.getValue(),dateFilterFormat);
+      to = moment(toPicker.getValue(),dateFilterFormat); 
+    } 
+    currentChart.filter( dc.filters.RangedFilter(from.toDate(), to.toDate()) );
+    timeValues[getTimeScale()].dimension.filterRange([from.toDate(), to.toDate()]);
+    refreshTable();
+    dc.redrawAll();
+  }  
+  
+}
+  
+  
+var inputAwardDateFrom = document.querySelector('input[name="award_date_from"]');
+var pickerAwardDateFrom = datepicker(inputAwardDateFrom, datepickerInitialiser('award','from')); 
+  
+var inputAwardDateTo = document.querySelector('input[name="award_date_to"]');
+var pickerAwardDateTo = datepicker(inputAwardDateTo, datepickerInitialiser('award','to'));
+  
+var inputExpDateFrom = document.querySelector('input[name="exp_date_from"]');
+var pickerExpDateFrom = datepicker(inputExpDateFrom,datepickerInitialiser('exp','from'));  
+
+var inputExpDateTo = document.querySelector('input[name="exp_date_to"]');
+var pickerExpDateTo = datepicker(inputExpDateTo,datepickerInitialiser('exp','to'));
   
 /**********************************
 * Step0: Load data from json file *
@@ -293,110 +344,89 @@ var commodityTypeChart = dc.pieChart("#dc-commodity-type-chart");
 var stateLocationChart = dc.rowChart("#dc-state-location-chart");
 
 var companiesChart = dc.rowChart("#dc-companies-chart");
-var licenseGroupsChart = dc.rowChart("#dc-license-groups-chart");
-
-  
-//var likesDateChart = dc.barChart("#dc-likes-date-chart");
-//var commentsDateChart = dc.barChart("#dc-comments-date-chart");
-//var sharesDateChart = dc.barChart("#dc-shares-date-chart");
-//var likesChart = dc.barChart("#dc-likes-chart");
-//var commentsChart = dc.barChart("#dc-comments-chart");
-//var sharesChart = dc.barChart("#dc-shares-chart");
-//var postTypeChart = dc.pieChart("#dc-post-type-chart");
-//var dayOfWeekChart = dc.rowChart("#dc-day-of-week-chart");
-//var hourChart = dc.rowChart("#dc-hour-chart");  
+var licenseLocationChart = dc.rowChart("#dc-license-location-chart");
+ 
 var licensesTable = dc.dataTable('.dc-data-table');
 var licensesCount = dc.dataCount('.dc-data-count');
   
+var dataFromSource;
+  
+var refreshTable = function () {
+  dc.events.trigger(function () {
+    var t = $('#table' ).DataTable()
+    .clear()
+    .rows.add( awardTimeValues.date.dimension.top(Infinity) )
+    .draw();
+  });
+}
+var data_table_opts = tableConfig();
+
 var facts;
 var all;
 
 var ofs = 0, pag = 10;
   
 var datasets = {
-  "2014 EITI Report": "data/Gems_and_jade_eiti_2014.csv",
-  "Hkamti test data": "data/Hkamti-test-1.csv"
-//  "Irrawaddy English Language Edition": "data/IrrawaddyEN_facebook_statuses.csv",
-//  "Irrawaddy Myanmar Language Edition": "data/IrrawaddyMM_facebook_statuses.csv",
-//  "7Day": "data/7Day_facebook_statuses.csv",
-//  "Eleven English Language Edition": "data/ElevenEN_facebook_statuses.csv",
-//  "Eleven Myanmar Language Edition": "data/ElevenMM_facebook_statuses.csv",
-//  "Myanmar Times": "data/MMTimes_facebook_statuses.csv",
-//  "VoA Burmese": "data/VOAMM_facebook_statuses.csv",
-//  "BBC Burmese": "data/BBCMM_facebook_statuses.csv",
-//  "Telenor": "data/Telenor_facebook_statuses.csv"
+  "2013-14 EITI Report": "data/2013-14_Annex_10-Register_of_Licenses-gems_and_jade_CLEAN.csv",
+  "2014-15 EITI Report": "data/2014-15_Annex_10-Register_of_Licenses-gems_and_jade_CLEAN.csv",
+  "2015-16 EITI Report": "data/2015-16_Annex_10-Register-of-Licenses-gems_and_jade_CLEAN.csv"
+//  "2014 EITI Report": "data/Gems_and_jade_eiti_2014.csv",
+//  "Hkamti test data": "data/Hkamti-test-1.csv"
 }
 
 var datasetNames = Object.keys(datasets);
 
 var option, si = 0, sil = datasetNames.length;
 
-var fbPageSelect = document.getElementById('mainTitle');
+var datasetSelect = document.getElementById('mainTitle');
   
 for (; si < sil; si += 1) {
     option = document.createElement('option');
     option.setAttribute('value', datasets[datasetNames[si]]);
     option.appendChild(document.createTextNode(datasetNames[si]));
-    fbPageSelect.appendChild(option);
+    datasetSelect.appendChild(option);
 }
   
-//updateData("Irrawaddy English Language Edition");
-updateData("2014 EITI Report");
+updateData("2013-14 EITI Report",true);
   
-fbPageSelect.onchange = function() {
-  console.log(fbPageSelect.options[fbPageSelect.selectedIndex].text);
-  updateData(fbPageSelect.options[fbPageSelect.selectedIndex].text);
+datasetSelect.onchange = function() {
+  console.log(datasetSelect.options[datasetSelect.selectedIndex].text);
+  updateData(datasetSelect.options[datasetSelect.selectedIndex].text);
 }
-  
 
-function updateData(page) {
+
+var cRadio = document.getElementsByName('company_radio');
+var lRadio = document.getElementsByName('location_radio');
+
+function updateData(page,initTable) {
 
   
   // load data from a csv file
 d3.csv(datasets[page], function (data) {
-
-  console.log(data);
+  
+  dataFromSource = data;
+  console.log(dataFromSource);
   // format our data
   var dtgFormat = d3.time.format("%Y-%m-%d");
   var dtgDisplayFormat = d3.time.format("%d %b %Y");
-//  var dtgFormatIrrEN = d3.time.format("%Y-%m-%d");
   
-  data.forEach(function(d) { 
-//    console.log(d);
-//    if (page == "Irrawaddy English Language Edition")
-//      d.dtg = dtgFormatIrrEN.parse(d.date);
-//    else {
-//      console.log(d.status_published);
-      
+  dataFromSource.forEach(function(d) { 
     d.awardDtg = dtgFormat.parse(d.Award_date_cl); 
-//    d.awardDtg = dtgFormat.parse(d.From_cl); 
-    if (d.awardDtg.getFullYear() < 1950) {
+    d.awardDatePretty = moment(d.Award_date_cl).format(dateFilterFormat);
+    if (d.awardDtg === null) {
       d.awardDtg = 0;
     }
     
     d.expDtg = dtgFormat.parse(d.Expiry_date_cl); 
-//    d.expDtg = dtgFormat.parse(d.To_cl); 
-    if (d.expDtg.getFullYear() < 1950) {
+    d.expDatePretty = moment(d.Expiry_date_cl).format(dateFilterFormat);
+    if (d.expDtg === null) {
       d.expDtg = 0;
     }
-    
-    
-//    }
-//    d.num_likes = +d.num_likes;
-//    d.num_comments = +d.num_comments;
-//    d.num_shares = +d.num_shares;
-//    if (d.dtg) {
-//      d.hour = +d.dtg.getHours();
-//      d.dayofweek = +d.dtg.getDay();  
-//    }
-    
-//    console.log(d.dtg);
-//    console.log(d.dtg.getHours());
-//    console.log(d.dtg.getDay());
   });
   
-  data = data.filter(function(d) {
-//    console.log(d.dtg);
+  // remove records that don't have both award date and expiry date
+  dataFromSource = dataFromSource.filter(function(d) {
+//    console.log(d);
     if (d.awardDtg && d.expDtg) return true;
     else return false;
   });
@@ -412,7 +442,7 @@ d3.csv(datasets[page], function (data) {
 * 	Run the data through crossfilter    *
 ****************************************/
 
-  facts = crossfilter(data);  // Gets our 'facts' into crossfilter
+  facts = crossfilter(dataFromSource);  // Gets our 'facts' into crossfilter
   all = facts.groupAll();
 
 /******************************************************
@@ -441,10 +471,11 @@ d3.csv(datasets[page], function (data) {
   });
   var companiesValueGroup = companiesValue.group(); 
   
-  var licenseGroupsValue = facts.dimension(function(d) {
-    return d.Group_cl;
+  
+  var licenseLocationValue = facts.dimension(function(d) {
+    return d.License_location_cl;
   });
-  var licenseGroupsValueGroup = licenseGroupsValue.group(); 
+  var licenseLocationValueGroup = licenseLocationValue.group(); 
   
 //  var postTypeValue = facts.dimension(function(d) {
 //    return d.status_type;
@@ -483,6 +514,7 @@ d3.csv(datasets[page], function (data) {
       },
       'week': {
         'dimension': facts.dimension(function(d) {
+//                        console.log(d);
                         return d3.time.week(d[timeVal]);
                       }),
         'units': d3.time.weeks
@@ -492,7 +524,7 @@ d3.csv(datasets[page], function (data) {
                         return d3.time.month(d[timeVal]);
                       }),
         'units': d3.time.months
-      } 
+      }
     }
 
     timeValues.date['group'] = timeValues.date.dimension.group();
@@ -617,7 +649,19 @@ d3.csv(datasets[page], function (data) {
     .brushOn(true)
     .centerBar(false)
     .xAxisPadding(50) 
-    .controlsUseVisibility(true);
+    .controlsUseVisibility(true)
+    .on('filtered', function(chart, filter){  
+      console.log(filter);
+      if (filter && filter.length > 1) {
+        pickerAwardDateFrom.setValue(String(filter[0]));
+        pickerAwardDateTo.setValue(String(filter[1]));
+      } else {
+        pickerAwardDateFrom.setValue("reset");
+        pickerAwardDateTo.setValue("reset");
+      }
+      refreshTable();
+    });
+//    .filter(dc.filters.RangedFilter('2011-10-10','2015-10-10'));
   
   // Date Expired bar chart
   dateExpiryChart.width(900)
@@ -636,7 +680,18 @@ d3.csv(datasets[page], function (data) {
     .brushOn(true)
     .centerBar(false)
     .xAxisPadding(50) 
-    .controlsUseVisibility(true);
+    .controlsUseVisibility(true)
+    .on('filtered', function(chart, filter){  
+      console.log(filter);
+      if (filter && filter.length > 1) {
+        pickerExpDateFrom.setValue(String(filter[0]));
+        pickerExpDateTo.setValue(String(filter[1]));
+      } else {
+        pickerExpDateFrom.setValue("reset");
+        pickerExpDateTo.setValue("reset");
+      }
+      refreshTable();
+    });
   
   
   // License Type donut chart
@@ -659,21 +714,11 @@ d3.csv(datasets[page], function (data) {
     .transitionDuration(500) 
     .controlsUseVisibility(true);
   
-//  // State donut chart
-//  stateLocationChart.width(300)
-//    .height(150)
-//    .dimension(stateLocationValue)
-//    .group(stateLocationValueGroup)
-//    .renderLabel(true)
-//    .innerRadius(30)
-//    .transitionDuration(500) 
-//    .controlsUseVisibility(true);
-  
   
   // State/Region bar chart
   stateLocationChart.width(300)
     .height(200)
-    .margins({top: 0, right: 10, bottom: 20, left: 40})
+    .margins({top: 0, right: 10, bottom: 20, left: 10})
     .dimension(stateLocationValue)
     .group(stateLocationValueGroup)
     .transitionDuration(500)
@@ -689,8 +734,8 @@ d3.csv(datasets[page], function (data) {
   
   // Companies bar chart
   companiesChart.width(450)
-    .height(1000)
-    .margins({top: 0, right: 10, bottom: 20, left: 40})
+    .height(companiesValueGroup.size()*30)
+    .margins({top: 0, right: 10, bottom: 20, left: 10})
     .dimension(companiesValue)
     .group(companiesValueGroup)
     .transitionDuration(500)
@@ -705,12 +750,12 @@ d3.csv(datasets[page], function (data) {
     .ordering(function(d) { return -d.value; })
     .xAxis().tickFormat(function(v) {return v;});  
   
-  // License Groups bar chart
-  licenseGroupsChart.width(450)
-    .height(1000)
-    .margins({top: 10, right: 10, bottom: 20, left: 40})
-    .dimension(licenseGroupsValue)
-    .group(licenseGroupsValueGroup)
+  // License Area bar chart
+  licenseLocationChart.width(450)
+    .height(licenseLocationValueGroup.size()*30)
+    .margins({top: 0, right: 10, bottom: 20, left: 40})
+    .dimension(licenseLocationValue)
+    .group(licenseLocationValueGroup)
     .transitionDuration(500)
     .controlsUseVisibility(true)
     .filterPrinter(function (d) {
@@ -722,162 +767,19 @@ d3.csv(datasets[page], function (data) {
     })
     .ordering(function(d) { return -d.value; })
     .xAxis().tickFormat(function(v) {return v;});  
-  
-//  // Likes by Date bar chart
-//  likesDateChart.width(1000)
-//    .height(200)
-//    .margins({top: 10, right: 10, bottom: 50, left: 40})
-//    .dimension(timeValues[getTimeScale()].dimension)
-//    .group(timeValues[getTimeScale()].metricsGroup) 
-//    .valueAccessor(function (p) {
-//      return p.value.avgLikes;
-//    })
-//    .x(d3.time.scale()) 
-//    .xUnits(timeValues[getTimeScale()].units)
-//    .elasticX(true)
-//    .elasticY(true)
-//    .brushOn(false)
-//    .centerBar(false)
-//    .xAxisPadding(50) 
-//    .controlsUseVisibility(false);
-//  
-//  // Comments by Date bar chart
-//  commentsDateChart.width(1000)
-//    .height(200)
-//    .margins({top: 10, right: 10, bottom: 50, left: 40})
-//    .dimension(timeValues[getTimeScale()].dimension)
-//    .group(timeValues[getTimeScale()].metricsGroup) 
-//    .valueAccessor(function (p) {
-//      return p.value.avgComments;
-//    })
-//    .x(d3.time.scale()) 
-//    .xUnits(timeValues[getTimeScale()].units)
-//    .elasticX(true)
-//    .elasticY(true)
-//    .brushOn(false)
-//    .centerBar(false)
-//    .xAxisPadding(50) 
-//    .controlsUseVisibility(false);
-//  
-//  // Likes by Date bar chart
-//  sharesDateChart.width(1000)
-//    .height(200)
-//    .margins({top: 10, right: 10, bottom: 50, left: 40})
-//    .dimension(timeValues[getTimeScale()].dimension)
-//    .group(timeValues[getTimeScale()].metricsGroup) 
-//    .valueAccessor(function (p) {
-//      return p.value.avgShares;
-//    })
-//    .x(d3.time.scale()) 
-//    .xUnits(timeValues[getTimeScale()].units)
-//    .elasticX(true)
-//    .elasticY(true)
-//    .brushOn(false)
-//    .centerBar(false)
-//    .xAxisPadding(50) 
-//    .controlsUseVisibility(false);
-//
-//
-//  // Like histogram chart
-//  likesChart.width(300)
-//    .height(200)
-//    .margins({top: 10, right: 10, bottom: 20, left: 40})
-//    .dimension(likeValues) 
-//    .group(likeValuesGroup) 
-//    .x(d3.scale.log()) 
-//    .elasticX(true)
-//    .elasticY(true)
-//    .brushOn(true)
-//    .centerBar(false)
-//    .controlsUseVisibility(true)
-//    .xAxis().tickFormat(function (v) {
-//      if (Math.log10(v) - Math.floor(Math.log10(v)) == 0)
-//        return v-1;
-//      else return "";
-//    });
-//  
-//  // Comments histogram chart
-//  commentsChart.width(300)
-//    .height(200)
-//    .margins({top: 10, right: 10, bottom: 20, left: 40})
-//    .dimension(commentValues) 
-//    .group(commentValuesGroup) 
-//    .x(d3.scale.log()) 
-//    .elasticX(true)
-//    .elasticY(true)
-//    .brushOn(true)
-//    .centerBar(false)
-//    .controlsUseVisibility(true)
-//    .xAxis().tickFormat(function (v) {
-//      if (Math.log10(v) - Math.floor(Math.log10(v)) == 0)
-//        return v-1;
-//      else return "";
-//    });
-//  
-//   // Shares histogram chart
-//  sharesChart.width(300)
-//    .height(200)
-//    .margins({top: 10, right: 10, bottom: 20, left: 40})
-//    .dimension(shareValues) 
-//    .group(shareValuesGroup) 
-//    .x(d3.scale.log()) 
-//    .elasticX(true)
-//    .elasticY(true)
-//    .brushOn(true)
-//    .centerBar(false)
-//    .controlsUseVisibility(true)
-//    .xAxis().tickFormat(function (v) {
-//      if (Math.log10(v) - Math.floor(Math.log10(v)) == 0)
-//        return v-1;
-//      else return "";
-//    });
-//  
-//  
-//  // Post Type donut chart
-//  postTypeChart.width(200)
-//    .height(200)
-//    .dimension(postTypeValue)
-//    .group(postTypeValueGroup)
-//    .renderLabel(true)
-//    .innerRadius(40)
-//    .transitionDuration(500) 
-//    .controlsUseVisibility(true);
-//  
-//  
-//  // Day of week bar chart
-//  dayOfWeekChart.width(300)
-//    .height(200)
-//    .margins({top: 10, right: 10, bottom: 20, left: 40})
-//    .dimension(dayOfWeekValue)
-//    .group(dayOfWeekValueGroup)
-//    .transitionDuration(500)
-//    .controlsUseVisibility(true)
-//    .filterPrinter(function (d) {
-//      return d.map(function(x) {return " " + x.split('.')[1];});
-//    })
-//    .elasticX(true)
-//    .label(function (d) {
-//        return d.key.split('.')[1];
-//    })
-//    .xAxis().tickFormat(function(v) {return v;});
-//  
-//  // Day of week bar chart
-//  hourChart.width(400)
-//    .height(400)
-//    .margins({top: 10, right: 10, bottom: 20, left: 40})
-//    .dimension(hourValue)
-//    .group(hourValueGroup)
-//    .transitionDuration(500)
-//    .controlsUseVisibility(true)
-//    .filterPrinter(function (d) {
-//      return d.map(function(x) {return " " + x.split('.')[1];});
-//    })
-//    .elasticX(true)
-//    .label(function (d) {
-//      return d.key.split('.')[1];
-//    })
-//    .xAxis().tickFormat(function(v) {return v;});
-  
+ 
+  for (var i = cRadio.length; i--;) {
+    if (cRadio[i].value == 'licenses') cRadio[i].checked = true;
+    cRadio[i].onchange = function() {
+      if(this.checked) sortRowChartBy(this.value,companiesChart);
+    }
+  }
+  for (var i = lRadio.length; i--;) {
+    if (lRadio[i].value == 'licenses') lRadio[i].checked = true;
+    lRadio[i].onchange = function() {
+      if(this.checked) sortRowChartBy(this.value,licenseLocationChart);
+    }
+  } 
 
     
   // Data Count
@@ -885,9 +787,9 @@ d3.csv(datasets[page], function (data) {
     .dimension(facts)
     .group(all)
     .html({
-        some: '<strong>%filter-count</strong> selected out of <strong>%total-count</strong> records' +
-            ' | <a href=\'javascript:dc.filterAll(); dc.renderAll();\'>Reset All</a>',
-        all: 'All records selected. Please click on the graph to apply filters.'
+        some: '<strong>%filter-count</strong> selected out of <strong>%total-count</strong> licenses' +
+            ' | <a href=\'javascript:dc.filterAll(); dc.renderAll();\'>Reset All Filters</a>',
+        all: 'All licenses selected. Please click on the graphs below to apply filters.'
     });
   
   // Data Table
@@ -900,12 +802,6 @@ d3.csv(datasets[page], function (data) {
     })
     .size(facts.size())
     .columns([
-//  <span>Date</span>
-//  <span>Post Content</span>
-//  <span>URL</span>
-//  <span>Likes</span>
-//  <span>Comments</span>
-//  <span>Shares</span>
       
       {
         label: 'License Owner Name',
@@ -945,19 +841,35 @@ d3.csv(datasets[page], function (data) {
         format: function(d) { return d['Location_state_cl'];}
       },
       {
-        label: 'Group',
-        format: function(d) { return d['Group_cl'];}
+        label: 'License Location',
+        format: function(d) { return d['License_location_cl'];}
       },
       {
         label: 'Block',
-        format: function(d) { return d['Block_cl'];}
+        format: function(d) { 
+          if (d['License_location_code_2_cl'])
+            return d['License_location_code_1_cl'] + ' ' + d['License_location_code_2_cl'];
+          else return d['License_location_code_1_cl'];
+        }
       }
     ])
     .sortBy(function(d){ return d['Company_Name_cl']; });
   
     update();
-
-
+  
+    dc.chartRegistry.list().forEach( function(e){
+      if (e != dateExpiryChart && e != dateAwardChart) {
+        e.on('filtered', refreshTable); 
+      }    
+    })
+    
+  if (initTable) 
+    declareTable();
+  else 
+    refreshTable();
+  
+  
+  
 /****************************
 * Step6: Render the Charts  *
 ****************************/
@@ -967,6 +879,78 @@ d3.csv(datasets[page], function (data) {
 });
 }  
 
+  
+  
+function sortRowChartBy(by,chart) {
+  if (by == 'name')
+    chart.ordering(function(d) { return d.key; });
+  else
+    chart.ordering(function(d) { return -d.value; });
+  chart.render();
+}
+  
+function declareTable() {
+  data_table_opts.data = dataFromSource;
+  table = $('#table').DataTable(data_table_opts);
+}
+
+
+
+  
+function tableConfig() {
+  return {
+    columns: [
+    {	
+      data: 'Company_Name_cl', title: 'License Owner Name',
+      render: function(d) {return d;}
+    },{	
+      data: 'awardDatePretty', title: 'Award Date',
+      render: function(d) {return d;}
+    },{	
+      data: 'expDatePretty', title: 'Expiry Date',
+      render: function(d) {return d;}
+    },{	
+      data: 'Commodity_cl', title: 'Commodity',
+      render: function(d) {return d;}
+    },{	
+      data: 'License_type_cl', title: 'License Type',
+      render: function(d) {return d;}
+    },{	
+      data: 'Area_acre_cl', title: 'License Area </br>(acres)',
+      render: function(d) {return d;}
+    },{	
+      data: 'Location_state_cl', title: 'State/Region',
+      render: function(d) {return d;}
+    },{	
+      data: 'License_location_cl', title: 'License Location',
+      render: function(d) {return d;}
+    },{	
+      data: function(d) {
+        return {
+          'License_location_code_1_cl': d['License_location_code_1_cl'],
+          'License_location_code_2_cl': d['License_location_code_2_cl'],
+        }
+      },
+      title: 'Block',
+      render: function(d) {
+        if (d['License_location_code_2_cl'])
+          return d['License_location_code_1_cl'] + ' ' + d['License_location_code_2_cl'];
+        else return d['License_location_code_1_cl'];
+      }
+    }],
+//    dom: '<"dt_top"iBf>rt<"dt_bottom">',
+//    retrieve: true,
+    paging: true,
+    scrollY: "500px",
+    scrollCollapse: true,
+    deferRender: true,
+    columnDefs: [
+      { "width": "10%", "targets": [1,2] },
+      {"type": "date", "targets": [1,2]},
+      {"type": "num", "targets": [5]}
+    ]
+  };
+}
   
 function display() {
     d3.select('#begin')
@@ -1007,46 +991,29 @@ function getTimeScale() {
 } 
   
 function resetDateChartData() {
-    var timeScale = getTimeScale();
-//    console.log(dateChart.filters());
-    var tempFilterAward = dateAwardChart.filters();
-    var tempFilterExp = dateExpiryChart.filters();
-    dateAwardChart
-      .filterAll()
-      .dimension(awardTimeValues[timeScale].dimension) 
-      .group(awardTimeValues[timeScale].group) 
-      .xUnits(awardTimeValues[timeScale].units);
-    dateExpiryChart
-      .filterAll()
-      .dimension(expTimeValues[timeScale].dimension) 
-      .group(expTimeValues[timeScale].group) 
-      .xUnits(expTimeValues[timeScale].units);
+  var timeScale = getTimeScale();
+  console.log("resetDateChartData");
+  console.log(timeScale);
+  console.log(dateAwardChart.filters());
+  console.log(awardTimeValues[timeScale].dimension);
+  console.log(awardTimeValues[timeScale].group);
+  console.log(awardTimeValues[timeScale].units);
+  var tempFilterAward = dateAwardChart.filters();
+  var tempFilterExp = dateExpiryChart.filters();
+
+  dateAwardChart    
+    .filterAll()
+    .dimension(awardTimeValues[timeScale].dimension) 
+    .group(awardTimeValues[timeScale].group) 
+    .xUnits(awardTimeValues[timeScale].units);
+  dateExpiryChart
+    .filterAll()
+    .dimension(expTimeValues[timeScale].dimension) 
+    .group(expTimeValues[timeScale].group) 
+    .xUnits(expTimeValues[timeScale].units);
   
-//    likesDateChart
-//      .filterAll()
-//      .dimension(timeValues[timeScale].dimension) 
-//      .group(timeValues[timeScale].metricsGroup) 
-//      .xUnits(timeValues[timeScale].units);  
-//    commentsDateChart
-//      .filterAll()
-//      .dimension(timeValues[timeScale].dimension) 
-//      .group(timeValues[timeScale].metricsGroup) 
-//      .xUnits(timeValues[timeScale].units);  
-//    sharesDateChart
-//      .filterAll()
-//      .dimension(timeValues[timeScale].dimension) 
-//      .group(timeValues[timeScale].metricsGroup) 
-//      .xUnits(timeValues[timeScale].units);  
-  
-  
-    if (tempFilterAward.length > 0 || 
-       tempFilterExp.length > 0) {
-      dateAwardChart.filter(tempFilterAward[0]);
-      dateExpiryChart.filter(tempFilterExp[0]);
-//      likesDateChart.filter(tempFilter[0]);
-//      commentsDateChart.filter(tempFilter[0]);
-//      sharesDateChart.filter(tempFilter[0]);
-    }
+  if (tempFilterAward.length) dateAwardChart.filter(tempFilterAward[0]); 
+  if (tempFilterExp.length) dateExpiryChart.filter(tempFilterExp[0]); 
 }  
   
 </script>

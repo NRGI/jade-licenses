@@ -1043,6 +1043,8 @@ dc.baseMixin = function (_chart) {
 
     var _filters = [];
     var _filterHandler = function (dimension, filters) {
+//      console.log(dimension);
+//      console.log(filters);
         if (filters.length === 0) {
             dimension.filter(null);
         } else if (filters.length === 1 && !filters[0].isFiltered) {
@@ -2004,6 +2006,8 @@ dc.baseMixin = function (_chart) {
      * @return {dc.baseMixin}
      */
     _chart.filter = function (filter) {
+//        console.log('_chart.filter()');
+//        console.log(filter);
         if (!arguments.length) {
             return _filters.length > 0 ? _filters[0] : null;
         }

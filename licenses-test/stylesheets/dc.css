@@ -46,7 +46,7 @@ div.dc-chart {
   shape-rendering: crispEdges; }
 
 .dc-chart .axis text {
-  font: 10px sans-serif; }
+  font: 12px sans-serif; }
 
 .dc-chart .grid-line, .dc-chart .axis .grid-line, .dc-chart .grid-line line, .dc-chart .axis .grid-line line {
   fill: none;
@@ -201,7 +201,7 @@ div.dc-chart {
     font-weight: bold; }
 
 .dc-legend {
-  font-size: 11px; }
+  font-size: 13px; }
   .dc-legend .dc-legend-item {
     cursor: pointer; }
 

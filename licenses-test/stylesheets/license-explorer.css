@@ -1,0 +1,15 @@
+.field {
+  display: inline-block;
+  vertical-align: top;
+  min-width: 250px;
+}
+
+.row-chart-overflow {
+  overflow-y: auto;
+  height: 400px;
+}
+
+.chart-title {
+  text-align: center;
+/*  display: inline-grid;*/
+}
