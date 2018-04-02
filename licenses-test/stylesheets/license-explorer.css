@@ -1,3 +1,11 @@
+
+@import url("stylesheets/font-awesome.min.css");
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,400,400italic"); 
+
+.body {
+  margin: 30px;
+}
+
 .field {
   display: inline-block;
   vertical-align: top;
@@ -13,3 +21,56 @@
   text-align: center;
 /*  display: inline-grid;*/
 }
+
+/* Sticky nav */
+
+#navbar {
+  overflow: hidden;
+  z-index: 1000;
+  background-color: #fff;
+  text-align: center;
+}
+
+#navbar a {
+  float: center;
+  display: inline;
+/*  color: #f2f2f2;*/
+  text-align: center;
+  vertical-align: middle;
+  margin: 30px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  border-bottom-width: 0px;
+/*  border-bottom: 2px #00A86B;*/
+}
+
+#navbar a:hover {
+  color: #00A86B;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: #00A86B !important;
+}
+
+
+#navbar a.active {
+/*  background-color: #00A86B;*/
+  color: #00A86B;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: #00A86B !important;
+} 
+
+a {
+  -moz-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  -webkit-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  -ms-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  border-bottom: dotted 1px #666;
+  color: inherit;
+  text-decoration: none;
+}
+
+  a:hover {
+    border-bottom-color: transparent !important;
+    color: #00A86B;
+  }
