@@ -2548,6 +2548,7 @@ dc.marginMixin = function (_chart) {
 dc.colorMixin = function (_chart) {
     var _colors = d3.scale.category20c();
     var _defaultAccessor = true;
+  
 
     var _colorAccessor = function (d) { return _chart.keyAccessor()(d); };
 
@@ -5462,6 +5463,7 @@ dc.barChart = function (parent, chartGroup) {
     }
 
     function renderBars (layer, layerIndex, d) {
+      
         var bars = layer.selectAll('rect.bar')
             .data(d.values, dc.pluck('x'));
 
@@ -5932,6 +5934,8 @@ dc.lineChart = function (parent, chartGroup) {
     }
 
     function drawArea (layersEnter, layers) {
+      
+        
         if (_renderArea) {
             var area = d3.svg.area()
                 .x(function (d) {
@@ -6505,11 +6509,13 @@ dc.dataTable = function (parent, chartGroup) {
     }
 
     function renderRows (groups) {
+      
         var rows = groups.order()
             .selectAll('tr.' + ROW_CSS_CLASS)
             .data(function (d) {
                 return d.values;
-            });
+            })
+            .attr('background-color','#FF6E48');
 
         var rowEnter = rows.enter()
             .append('tr')
@@ -8581,12 +8587,18 @@ dc.rowChart = function (parent, chartGroup) {
                 return 'translate(0,' + ((i + 1) * _gap + i * height) + ')';
             }).select('rect')
             .attr('height', height)
-            .attr('fill', _chart.getColor)
+            .attr('fill', function(d,i) {
+//                console.log(d);
+//                console.log("fill color");
+//                _chart.getColor(d);
+                return isSelectedRow(d) ? "#FF6E48" : "#00A86B";
+            })
             .on('click', onClick)
             .classed('deselected', function (d) {
                 return (_chart.hasFilter()) ? !isSelectedRow(d) : false;
             })
             .classed('selected', function (d) {
+                if (isSelectedRow(d)) console.log(d);
                 return (_chart.hasFilter()) ? isSelectedRow(d) : false;
             });
 

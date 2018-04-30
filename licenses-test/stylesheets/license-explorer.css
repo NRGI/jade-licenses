@@ -2,14 +2,36 @@
 @import url("font-awesome.min.css");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,400,400italic"); 
 
-.body {
-  margin: 30px;
+body, p,  h1, h2, h3, h4, form, th, td, tr, label {
+/*  margin: 30px;*/
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  color: #666;
+}
+
+body, p, form, th, td, tr, svg, label {
+  font-size: 16px;
+}
+
+body, html {
+  padding-top: 10px;
+} 
+
+h4 {
+  font-size: 20px;
+}
+
+.container {
+  width: 90%;
+  max-width: 1000px;
+  align-items: center;
 }
 
 .field {
   display: inline-block;
   vertical-align: top;
-  min-width: 250px;
+  min-width: 150px;
 }
 
 .row-chart-overflow {
@@ -22,6 +44,32 @@
 /*  display: inline-grid;*/
 }
 
+.title-row {
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+.mainIndicator {
+  text-align: center;
+  float: none;
+  font-size: 20px;
+  font-weight: 300;
+  background-color: #fff;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#indicator-bar {
+  z-index: 1000;
+  background-color: #fff;
+  padding-bottom: 20px;
+  padding-top: 0px;
+  width: 100%;
+  max-width: 1000px;
+}
+
 /* Sticky nav */
 
 #navbar {
@@ -29,6 +77,11 @@
   z-index: 1000;
   background-color: #fff;
   text-align: center;
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  padding-bottom: 20px;
+  color: #666;
 }
 
 #navbar a {
@@ -45,7 +98,7 @@
 }
 
 #navbar a:hover {
-  color: #00A86B;
+/*  color: #00A86B;*/
   border-bottom-width: 2px;
   border-bottom-style: solid;
   border-bottom-color: #00A86B !important;
@@ -60,20 +113,62 @@
   border-bottom-color: #00A86B !important;
 } 
 
+.sticky {
+  position: fixed;
+  top: 0;
+  padding-top: 0.5em;
+  width: 100%;
+  height: 3em;
+  background-color: white;
+}
+
 a {
   -moz-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
   -webkit-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
   -ms-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
   transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-  border-bottom: dotted 1px #666;
+/*  border-bottom: dotted 1px #666;*/
   color: inherit;
   text-decoration: none;
 }
 
 a:hover {
-  border-bottom-color: transparent !important;
-  color: #00A86B;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: #00A86B;
+  text-decoration: none;
+  color: #000;
+/*  color: #00A86B;*/
 }
+
+.reset-button {
+  border: solid 1px #666;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 2px;
+/*  box-shadow: 1px 1px 1px grey;*/
+}
+
+a.reset-button:hover {
+/*  border: solid 1px #00A86B;*/
+  background-color: #00A86B;
+  border-bottom-color: #666;  
+  border-bottom-width: 1px;
+}
+
+a.reset-button:active  {
+/*  border: solid 1px #00A86B;*/
+  background-color: #00A86B;
+  border-bottom-color: #666;  
+  border-bottom-width: 1px;
+}
+
+.title-row {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+
 
 .d3-tip h1 {
     font-size: 14px;
@@ -120,14 +215,18 @@ a:hover {
     padding: inherit;
     border: none;
   }
-  .d3-tip {
+  .d3-tip {  
+    font-family: "Source Sans Pro", Helvetica, sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    color: #666;
     line-height: 1;
-    font-weight: normal;
+/*    font-weight: normal;*/
     padding: 4px;
-    background: white;
-    color: black;
+    background-color: rgba(255,255,255,1.0);
+/*    color: black;*/
     border-radius: 2px;
     pointer-events: none;
-    background:  white;
+/*    background:  white;*/
     box-shadow: 1px 1px 4px grey;
   }
