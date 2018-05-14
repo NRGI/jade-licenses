@@ -62,8 +62,8 @@
 <div class='container' > 
 <!--  <div class='row'>-->
 <!--  <div class='span12'>-->
-    <h1>License Explorer</h1>
-    <p>This tool lets you explore all licenses awarded to jade and gemstone mining companies in Myanmar. Results can be filtered by location, name of the company holding the license, and date of award and expiry. This tool is best viewed on a laptop or desktop computer.</p>
+    <h1>Mining License Explorer</h1>
+    <p>This tool allows you to explore all licenses awarded to jade and gemstone mining companies in Myanmar. Results can be filtered by location, license-holder company and date of award and expiry. This tool is best viewed on a laptop or desktop computer.</p>
     <br/>
 
 
@@ -144,14 +144,14 @@
         <div class='col-sm-6'>
           <h4 class="chart-title">License Holder</h4>
           Sort:&nbsp;
-          <input type="radio" name="company_radio" value="licenses" checked="true"/> By number of Licenses &nbsp;
           <input type="radio" name="company_radio" value="name" /> Alphabetically
+          <input type="radio" name="company_radio" value="licenses" checked="true"/> By number of Licenses &nbsp;
         </div>
         <div class='col-sm-6'>
           <h4 class="chart-title">Detailed Location</h4>
           Sort:&nbsp;
-          <input type="radio" name="location_radio" value="licenses" checked="true"/> By number of Licenses &nbsp;
           <input type="radio" name="location_radio" value="name" /> Alphabetically
+          <input type="radio" name="location_radio" value="licenses" checked="true"/> By number of Licenses &nbsp;
         </div>
 
   </div>    
@@ -176,6 +176,8 @@
       
       <div class='row title-row'>
       <div class='col-sm-12'>
+        <br/>
+        <br/>
         <hr/>
         <h2> Filter by Date </h2>
       <form action="">
@@ -244,7 +246,7 @@
   
 
     <h4>Where is the data from?</h4>
-    <p>The data used for this tool comes from the 2013-14, 2014-15, and 2015-16 EITI reports. The disaggregated license data comes from Annex 10 and 11 of those years' reports. Note that the disaggregated licenses data was only provided for the companies that were included in the reconciliation scope for 2013-14 but for 2014-15 and 2015-16, data was released for all active licenses.</p>  
+    <p>The data used for this tool comes from EITI reports covering three periods: 2013-2014, 2014-2015 and 2015-2016. The disaggregated license data for comes from Annex 10 and 11 of those years' reports. Please note that the disaggregated licenses data were only provided for the companies included in the reconciliation scope for 2013-14. For 2014-2015 and 2015-2016, however, data was released for all active licenses.</p>  
 
 <script>
 
@@ -447,6 +449,9 @@ d3.csv(datasets[page], function (data) {
     }
     if (d.License_type_cl === "Sharing") {
       d.License_type_cl = "Joint Venture";
+    }
+    if (d.License_type_cl === "") {
+      d.License_type_cl = "Private";
     }
   });
   
