@@ -13,14 +13,19 @@
 
 body, p,  h1, h2, h3, h4, form, th, td, tr, label {
 /*  margin: 30px;*/
-  font-family: "Source Sans Pro", Helvetica, sans-serif;
+/*  font-family: "Source Sans Pro", Helvetica, sans-serif;*/
+  font-family: 'mm_font', Fallback, sans-serif;
   font-weight: 300;
   font-style: normal;
   color: #666;
 }
 
-body, p, form, th, td, tr, svg, label {
+body, form, th, td, tr, svg, label {
   font-size: 16px;
+}
+
+p {
+  font-size: 0.9em;
 }
 
 body, html {
@@ -159,7 +164,7 @@ h4 {
   z-index: 1000;
   background-color: #fff;
   text-align: center;
-  font-family: "Source Sans Pro", Helvetica, sans-serif;
+/*  font-family: "Source Sans Pro", Helvetica, sans-serif;*/
   font-weight: 300;
   font-style: normal;
   padding-bottom: 20px;
