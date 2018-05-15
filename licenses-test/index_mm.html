@@ -37,7 +37,7 @@
 <!--  <link href='stylesheets/dc.min.css' rel='stylesheet' type='text/css'>-->
   <link rel='stylesheet' href='stylesheets/dc.css' >
   <link rel="stylesheet" href="stylesheets/datepicker-styles.css"/>
-  <link rel="stylesheet" href="stylesheets/license-explorer.css"/>
+  <link rel="stylesheet" href="stylesheets/license-explorer_mm.css"/>
 
   <style type="text/css">
   
@@ -50,12 +50,12 @@
 <!--          <a class="active" href="/index.html#header">Home</a>-->
     
     
-    <a href="//openjadedata.org/index.html"><span class="icon fa-home"></a>
-    <a href="//openjadedata.org/index.html#three">Data Stories</a>
-    <a class="active" href="//openjadedata.org/tools.html">Data Tools</a>
-    <a href="//openjadedata.org/datasets.html">Datasets</a>
-    <a href="//openjadedata.org/about.html">About</a>
-    <a href="index_mm.html" class="mm">မြန်မာ</a>
+    <a href="//openjadedata.org/index_mm.html"><span class="icon fa-home"></a>
+    <a href="//openjadedata.org/index_mm.html#three">ဆောင်းပါးများ</a>
+    <a class="active"  href="//openjadedata.org/tools_mm.html"> ပုံများ </a>
+    <a href="//openjadedata.org/datasets_mm.html">ကိန်းဂဏန်းဖိုင်များ</a>
+    <a href="//openjadedata.org/about_mm.html">အကြောင်းအရာ</a>
+    <a href="index.html">English</a>
   </div>
   </br>
 
@@ -66,8 +66,9 @@
 <div class='container' > 
 <!--  <div class='row'>-->
 <!--  <div class='span12'>-->
-    <h1>Mining License Explorer</h1>
-    <p>This tool allows you to explore all licenses awarded to jade and gemstone mining companies in Myanmar. Results can be filtered by location, license-holder company and date of award and expiry. This tool is best viewed on a laptop or desktop computer.</p>
+    <h1>ကျောက်တူးဖော်ခွင့်လိုင်စင်များ လေ့လာရန်</h1>
+    <br />
+    <p>ဤပုံကို အသုံးပြု၍ မြန်မာနိုင်ငံရှိ ကျောက်စိမ်းနှင့် အခြားကျောက်မျက်ရတနာ တူးဖော်ရေးလိုင်စင် ရရှိထားသော ကုမ္ပဏီများကို လေ့လာနိုင်ပါသည်။ အချက်အလက်များကို ရတနာနယ်မြေအလိုက်၊ လိုင်စင်ရထားသော ကုမ္ပဏီအလိုက်၊ လုပ်ကိုင်ခွင့် စတင်ရရှိသောရက်စွဲနှင့် သက်တမ်းကုန်ဆုံးရက်အလိုက် စစ်ထုတ်လေ့လာနိုင်ပါသည်။ ဤပုံကို ကွန်ပြူတာ သို့မဟုတ် လပ်တော့ပ်ဖြင့် ကြည့်ရှုရန် အသင့်လျော်ဆုံးဖြစ်ပါသည်။ </p>
     <br/>
 
 
@@ -78,19 +79,19 @@
   
 <!--<div class='container' style='font: 12px sans-serif; width: 1000px;'>-->
 
-      <h4>Select data source: <select id="mainTitle"></select></h3>
+      <h4>အချက်အလက်ရင်းမြစ်အား ရွေးချယ်ပါ <select id="mainTitle"></select></h3>
       
       <div class='row'>
           </br>
-          <h4 class='mainIndicator'> Total number of licenses in selected dataset: <span id="size"></span></h4>
+          <h4 class='mainIndicator'>ဤပုံတွင် ပါဝင်သော စုစုပေါင်းလိုင်စင်အရေအတွက် - <span id="size"></span></h4>
       </div>
 
       <div class='row' id='indicator-bar'>
 <!--      <div class='col-sm-12'>-->
           <h4 class='mainIndicator' style='padding-bottom: 20px;'> 
             <div class='dc-data-count' style="float:none;">
-             <span class='filter-count'></span>
-             selected out of <span class='total-count'></span> licenses.
+             <span class='total-count'></span>
+             လိုင်စင်မှ <span class='filter-count'></span> ခုအား ရွေးချယ်ထားသည်။
             </div>
           </h4>
       <hr class='mainIndicator'/>
@@ -106,20 +107,20 @@
     <div class='span12'>
       
         <div class='pie-graph span4' id='dc-license-type-chart'>
-          <h4 style="text-align: center">Ownership</h4>
-          <div style="visibility: hidden" class="reset">Selected: <span class="filter"></span>
+          <h4 style="text-align: center">ပိုင်ဆိုင်မှု</h4>
+          <div style="visibility: hidden" class="reset">ရွေးချယ်ထား - <span class="filter"></span>
             <a href="javascript:licenseTypeChart.filterAll();dc.redrawAll();" class="reset-button">Reset</a>
           </div>
         </div>
         <div class='pie-graph span4' id='dc-commodity-type-chart'>
-          <h4 style="text-align: center">Commodity</h4>
-          <div style="visibility: hidden" class="reset">Selected: <span class="filter"></span>
+          <h4 style="text-align: center">ရတနာအမျိုးအစား</h4>
+          <div style="visibility: hidden" class="reset">ရွေးချယ်ထား - <span class="filter"></span>
             <a href="javascript:commodityTypeChart.filterAll();dc.redrawAll();" class="reset-button">Reset</a>
           </div>
         </div>
         <div class='pie-graph span4' id='dc-state-location-chart'>
-          <h4 style="text-align: center">State/Region</h4>
-          <div style="visibility: hidden" class="reset">Selected: <span class="filter"></span>
+          <h4 style="text-align: center">ပြည်နယ်/တိုင်းဒေသကြီး </h4>
+          <div style="visibility: hidden" class="reset">ရွေးချယ်ထား - <span class="filter"></span>
             <a href="javascript:stateLocationChart.filterAll();dc.redrawAll();" class="reset-button">Reset</a>
           </div>
         </div>
@@ -146,16 +147,16 @@
   <div class='row title-row'>
       
         <div class='col-sm-6'>
-          <h4 class="chart-title">License Holder</h4>
-          Sort:&nbsp;
-          <input type="radio" name="company_radio" value="name" /> alphabetically
-          <input type="radio" name="company_radio" value="licenses" checked="true"/> by number of licenses &nbsp;
+          <h4 class="chart-title">လိုင်စင်ပိုင် ကုမ္ပဏီအမည်</h4>
+          ပြန်စီမည် - &nbsp;
+          <input type="radio" name="company_radio" value="name" /> အက္ခရာစဉ်အလိုက်
+          <input type="radio" name="company_radio" value="licenses" checked="true"/> လိုင်စင်အရေအတွက်အလိုက် &nbsp;
         </div>
         <div class='col-sm-6'>
-          <h4 class="chart-title">Detailed Location</h4>
-          Sort:&nbsp;
-          <input type="radio" name="location_radio" value="name" /> alphabetically
-          <input type="radio" name="location_radio" value="licenses" checked="true"/> by number of licenses &nbsp;
+          <h4 class="chart-title">တူးဖော်ခွင့်ရသည့် နေရာn</h4>
+          ပြန်စီမည် - &nbsp;
+          <input type="radio" name="location_radio" value="name" /> အက္ခရာစဉ်အလိုက်
+          <input type="radio" name="location_radio" value="licenses" checked="true"/> လိုင်စင်အရေအတွက်အလိုက်	 &nbsp;
         </div>
 
   </div>    
@@ -163,14 +164,14 @@
       
         <div class='pie-chart col-sm-6'>
           <div id='dc-companies-chart' class='row-chart-overflow'>
-            <div style="visibility: hidden" class="reset">Selected: <span class="filter"></span>
+            <div style="visibility: hidden" class="reset">ရွေးချယ်ထား - <span class="filter"></span>
               <a href="javascript:companiesChart.filterAll();dc.redrawAll();" class="reset-button">Reset</a>
             </div>
           </div>
         </div>
         <div class='pie-chart col-sm-6'>
           <div id='dc-license-location-chart' class='row-chart-overflow'>
-            <div style="visibility: hidden" class="reset">Selected: <span class="filter"></span>
+            <div style="visibility: hidden" class="reset">ရွေးချယ်ထား - <span class="filter"></span>
               <a href="javascript:licenseLocationChart.filterAll();dc.redrawAll();" class="reset-button">Reset</a>
             </div>
           </div>
@@ -183,28 +184,28 @@
         <br/>
         <br/>
         <hr/>
-        <h2> Filter by Date </h2>
+        <h2> လိုင်စဉ်ရသည့် ရက်အလိုက်ရွေးမည် </h2>
       <form action="">
-        Aggregate by: &nbsp;
+        စုမည် - &nbsp;
         <input type="radio" name="timeRadio" value="date" 
-               onclick="javascript:resetDateChartData();dc.redrawAll();console.log('date radio checked')" > date 
+               onclick="javascript:resetDateChartData();dc.redrawAll();console.log('date radio checked')" > ရက် 
         <input type="radio" name="timeRadio" value="week" 
-               onclick="javascript:resetDateChartData();dc.redrawAll();console.log('week radio checked')"> week  
+               onclick="javascript:resetDateChartData();dc.redrawAll();console.log('week radio checked')"> အပတ်  
         <input type="radio" name="timeRadio" value="month" 
-               onclick="javascript:resetDateChartData();dc.redrawAll();console.log('month radio checked')" checked="true"> month
+               onclick="javascript:resetDateChartData();dc.redrawAll();console.log('month radio checked')" checked="true"> လ
       </form>
       </div>
       </div>
       <div class='row'>
         <div class='span12'>
             <div class='pie-graph span12' id='dc-award-date-chart'>
-              <h4>Date of Award</h4>
-              <p>Click and drag on the chart to filter licenses by date of award or select from the date pickers below.</p>
+              <h4>လိုင်စင်ရရှိသည့်ရက်စွဲ</h4>
+              <p>လိုင်စင်ရရှိသည့်ရက်စွဲအလိုက် စစ်ထုတ်လိုပါက ပုံပေါ်တွင် ကလစ်နှိပ်ပြီး ရွေးချယ်ပါ။  သို့မဟုတ် အောက်ပါ ပြက္ခဒိန်များတွင် ရက်စွဲများကို ရွေးပါ။</p>
               <div class="field">
-                From: <input name="award_date_from"/>
+                မှ <input name="award_date_from"/>
               </div>
               <div class="field">
-                  to: <input name="award_date_to"/>
+                  အထိ <input name="award_date_to"/>
               </div>
               <div style="visibility: hidden; display: inline"
                    class="reset"> <!-- selected: <span class="filter"></span> -->
@@ -216,13 +217,13 @@
       <div class='row'>
         <div class='span12'>
             <div class='pie-graph span12' id='dc-expiry-date-chart'>
-              <h4>Date of Expiry</h4>
-              <p>Click and drag on the chart to filter licenses by date of expiry or select from the date pickers below.</p>
+              <h4>လိုင်စင်သက်တမ်းကုန်ဆုံးရက်စွဲ</h4>
+              <p>လိုင်စင်သက်တမ်းကုန်ဆုံးသည့် ရက်စွဲအလိုက် စစ်ထုတ်လိုပါက ပုံပေါ်တွင် ကလစ်နှိပ်ပြီး ရွေးချယ်ပါ။  သို့မဟုတ် အောက်ပါ ပြက္ခဒိန်များတွင် ရက်စွဲများကို ရွေးပါ။</p>
               <div class="field">
-                From: <input name="exp_date_from"/>
+                မှ <input name="exp_date_from"/>
               </div>
               <div class="field">
-                  to: <input name="exp_date_to"/>
+                  ထိ <input name="exp_date_to"/>
               </div>
               <div style="visibility: hidden; display: inline"
                    class="reset"> <!-- selected: <span class="filter"></span> -->
@@ -237,7 +238,7 @@
   <div class='row title-row'>
   <div class='col-sm-12'>
     <hr/>
-    <h2> View Filtered Data </h2>
+    <h2> အပေါ်မှ စစ်ထုတ်ထားသော အချက်အလက်များအား <br/> အောက်ပါဇယားတွင် ကြည့်မည် </h2>
   </div>
   </div>
   
@@ -249,8 +250,8 @@
   <br/>
   
 
-    <h4>Where is the data from?</h4>
-    <p>The data used for this tool comes from EITI reports covering three periods: 2013-2014, 2014-2015 and 2015-2016. The disaggregated license data for comes from Annex 10 and 11 of those years' reports. Please note that the disaggregated licenses data were only provided for the companies included in the reconciliation scope for 2013-14. For 2014-2015 and 2015-2016, however, data was released for all active licenses.</p>  
+    <h4>မည်သည့်အချက်အလက်များအပေါ် အခြေခံထားသနည်း။ </h4>
+    <p>ဤပုံတွင် အသုံးပြုထားသော အချက်အလက်များကို  ၂၀၁၃-၁၄၊ ၂၀၁၄-၁၅ နှင့် ၂၀၁၅-၁၆ EITI အစီခံစာများမှ ရှိပါသည်။ အသေးစိတ်လိုင်စင်အချက်အလက်များကို ထိုအစီရင်ခံစာများ၏ နောက်ဆက်တွဲ ၁၀ နှင့် ၁၁ တို့မှ ရရှိပါသည်။ သတိပြုရန်မှာ  ၂၀၁၃-၁၄ တွင် အစီရင်ခံစာ၏ အချက်အလက် ရှေ့နောက်ညီညွတ် ရေးလေ့လာမှုတွင် ပါဝင်သော ကုမ္ပဏီများ၏ အသေးစိတ်လိုင်စင်အချက်အလက်များကိုသာ ဖော်ပြထားပါသည်။ ၂၀၁၄-၁၅ နှင့် ၂၀၁၅-၁၆ အတွက်တွင်မူ သက်တမ်းရှိသေးသော လိုင်စင်အားလုံး၏ အချက်အလက်များကို ထုတ်ပြန်ထားပါသည်။ </p>  
 
 <script>
 
@@ -691,8 +692,8 @@ d3.csv(datasets[page], function (data) {
     .brushOn(true)
     .centerBar(false)
     .xAxisPadding(50)
-    .yAxisLabel("Number of licenses") 
-    .xAxisLabel("Year") 
+    .yAxisLabel("လိုင်စင်အရေအတွက်") 
+    .xAxisLabel("နှစ်") 
     .controlsUseVisibility(true)
     .on('filtered', function(chart, filter){  
       console.log(filter);
@@ -725,8 +726,8 @@ d3.csv(datasets[page], function (data) {
     .brushOn(true)
     .centerBar(false)
     .xAxisPadding(50) 
-    .yAxisLabel("Number of licenses") 
-    .xAxisLabel("Year") 
+    .yAxisLabel("လိုင်စင်အရေအတွက်") 
+    .xAxisLabel("နှစ်") 
     .controlsUseVisibility(true)
     .on('filtered', function(chart, filter){  
       console.log(filter);
@@ -882,9 +883,9 @@ d3.csv(datasets[page], function (data) {
     .dimension(facts)
     .group(all)
     .html({
-        some: '<strong>%filter-count</strong> selected out of <strong>%total-count</strong> licenses' +
-            ' <a href=\'javascript:dc.filterAll(); dc.renderAll();\' class="reset-button">Reset All Filters</a>',
-        all: 'All <strong>%filter-count</strong> licenses selected. Please click on the graphs below to apply filters.'
+        some: '<strong>%total-count</strong> လိုင်စင်မ <strong>%filter-count</strong> ခုအား ရွေးချယ်ထားသည်။ ' +
+            ' <a href=\'javascript:dc.filterAll(); dc.renderAll();\' class="reset-button">စစ်ထုတ်မှုအားလုံးကို ပြန်လည်ပယ်ဖျက်မည်</a>',
+        all: '<strong>%filter-count</strong> လိုင်စင်အားလုံးကို ရွေးချယ်ထားပါသည်။ အချက်အလက်များကို ထပ်မံစစ်ထုတ်ရန် ပုံများအပေါ်တွင် ထောက်၍ ရွေးချယ်နိုင်ပါသည်။'
     });
   
   // Data Table
@@ -996,28 +997,28 @@ function tableConfig() {
   return {
     columns: [
     {	
-      data: 'Company_Name_cl', title: 'License owner name',
+      data: 'Company_Name_cl', title: 'လိုင်စင်ပိုင်ရှင်အမည်',
       render: function(d) {return d;}
     },{	
-      data: 'awardDatePretty', title: 'Award date',
+      data: 'awardDatePretty', title: 'လိုင်စင်ရရှိသည့်ရက်စွဲ',
       render: function(d) {return d;}
     },{	
-      data: 'expDatePretty', title: 'Expiry date',
+      data: 'expDatePretty', title: 'လိုင်စင်သက်တမ်းကုန်ဆုံးရက်စွဲ',
       render: function(d) {return d;}
     },{	
-      data: 'Commodity_cl', title: 'Commodity',
+      data: 'Commodity_cl', title: 'ရတနာအမျိုးအစား',
       render: function(d) {return d;}
     },{	
-      data: 'License_type_cl', title: 'License type',
+      data: 'License_type_cl', title: 'လိုင်စင်အမျိုးအစား',
       render: function(d) {return d;}
     },{	
-      data: 'Area_acre_cl', title: 'License area </br>(acres)',
+      data: 'Area_acre_cl', title: 'တူးဖော်ခွင့်ရသည့် ဧရိယာ </br>(ဧက)',
       render: function(d) {return d;}
     },{	
-      data: 'Location_state_cl', title: 'State/Region',
+      data: 'Location_state_cl', title: 'ပြည်နယ်/တိုင်းဒေသကြီး',
       render: function(d) {return d;}
     },{	
-      data: 'License_location_cl', title: 'License location',
+      data: 'License_location_cl', title: 'တူးဖော်ခွင့်ရသည့် နေရာ',
       render: function(d) {return d;}
     },{	
       data: function(d) {
@@ -1026,7 +1027,7 @@ function tableConfig() {
           'License_location_code_2_cl': d['License_location_code_2_cl'],
         }
       },
-      title: 'Block',
+      title: 'လုပ်ကွက်',
       render: function(d) {
         if (d['License_location_code_2_cl'])
           return d['License_location_code_1_cl'] + ' ' + d['License_location_code_2_cl'];
