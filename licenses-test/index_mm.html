@@ -410,6 +410,7 @@ var all;
 var ofs = 0, pag = 10;
   
 var datasets = {
+  "2017-18 EITI Report": "data/gems_and_jade_2017-18.csv",
   "2016-17 EITI Report": "data/gems_and_jade_2016-17.csv",
   "2015-16 EITI Report": "data/2015-16_Annex_10-Register-of-Licenses-gems_and_jade_CLEAN.csv",
   "2014-15 EITI Report": "data/2014-15_Annex_10-Register_of_Licenses-gems_and_jade_CLEAN.csv",
@@ -431,7 +432,7 @@ for (; si < sil; si += 1) {
     datasetSelect.appendChild(option);
 }
   
-updateData("2013-14 EITI Report",true);
+updateData("2017-18 EITI Report",true);
   
 datasetSelect.onchange = function() {
   console.log(datasetSelect.options[datasetSelect.selectedIndex].text);
