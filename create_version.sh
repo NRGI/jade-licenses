@@ -7,4 +7,4 @@ cat > version.txt << EOF
 }
 EOF
 
-cp version.txt revenues-test/
+cp version.txt licenses-test/
